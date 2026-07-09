@@ -62,7 +62,7 @@ const stats = ref([
   { label: 'Proyek Portofolio', icon: FolderKanban, iconBg: 'bg-blue-500/10', iconColor: 'text-blue-400', value: null },
   { label: 'Keahlian (Skills)', icon: Cpu, iconBg: 'bg-purple-500/10', iconColor: 'text-purple-400', value: null },
   { label: 'Kartu Fokus', icon: UserSquare2, iconBg: 'bg-pink-500/10', iconColor: 'text-pink-400', value: null },
-  { label: 'Status Sistem', icon: Settings, iconBg: 'bg-emerald-500/10', iconColor: 'text-emerald-400', value: 'Aktif ✓' },
+  { label: 'Status Sistem', icon: Settings, iconBg: 'bg-emerald-500/10', iconColor: 'text-emerald-400', value: 'Aktif' },
 ])
 
 const quickLinks = [

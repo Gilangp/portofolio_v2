@@ -1,53 +1,45 @@
 <template>
-  <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 bg-white/40 dark:bg-[#070a13]/40 backdrop-blur-sm transition-colors duration-500 relative overflow-hidden">
-    <div class="orb top-1/4 left-10 w-80 h-80 bg-blue-500/10 dark:bg-cyan-500/15" />
-    <div class="orb bottom-1/3 right-10 w-80 h-80 bg-purple-500/10 dark:bg-indigo-500/15" />
+  <section id="about" class="min-h-[60vh] bg-gray-100 text-gray-900 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-850 dark:to-gray-800 dark:text-white transition-colors duration-700 relative overflow-hidden py-8 md:py-12">
+    <!-- Background elements -->
+    <div class="absolute top-0 right-0 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="max-w-6xl mx-auto relative z-10">
-      <!-- High-End Cyber-Satin Luxury Header -->
-      <div class="text-center mb-16 relative">
-        <div class="absolute inset-x-0 -top-6 flex justify-center pointer-events-none opacity-50 dark:opacity-35">
-          <div class="w-72 h-16 bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 blur-2xl rounded-full"></div>
-        </div>
-        <div class="relative inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 border border-blue-500/20 dark:border-cyan-500/25 backdrop-blur-md shadow-sm mb-4 transition-all hover:border-cyan-400/50">
-          <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-cyan-400 shadow-[0_0_8px_rgba(0,216,255,0.8)]"></span>
-          <span class="text-xs font-bold tracking-[0.18em] text-slate-800 dark:text-slate-200 uppercase">{{ t('Discovery', 'Mengenal Lebih Dekat') }}</span>
-        </div>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-          {{ t('About', 'Tentang') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cyan-400 dark:via-blue-500 dark:to-indigo-400 drop-shadow-[0_2px_12px_rgba(0,216,255,0.25)]">{{ t('Me', 'Saya') }}</span>
-        </h2>
-        <div class="flex items-center justify-center gap-2 mt-5">
-          <span class="w-2 h-2 rounded-full bg-blue-600 dark:bg-cyan-400 shadow-[0_0_10px_rgba(0,216,255,0.8)]"></span>
-          <span class="w-24 h-1 rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-transparent dark:from-cyan-400 dark:via-blue-500 dark:to-transparent"></span>
-        </div>
-      </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12 animate-fade-in">
+        <span class="relative inline-block">
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400">
+            {{ t('About Me', 'Tentang Saya') }}
+          </span>
+          <span class="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-underline"></span>
+        </span>
+      </h2>
 
-      <div class="flex flex-col lg:flex-row items-start gap-10 xl:gap-16">
+      <div class="flex flex-col lg:flex-row items-center gap-6 md:gap-8">
         <!-- Photo -->
-        <div class="w-full lg:w-2/5 flex justify-center">
-          <div class="relative group">
-            <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 scale-95" />
-            <div class="relative overflow-hidden rounded-2xl border-2 border-blue-400/40 hover:border-purple-400/60 shadow-xl transition-all duration-500">
+        <div class="w-full lg:w-2/5 order-1 flex justify-center">
+          <div class="relative flex justify-center mx-auto -mt-4 lg:mt-0">
+            <div class="overflow-hidden rounded-xl border-4 border-blue-400/50 hover:border-purple-300 transition-all duration-500 shadow-lg hover:shadow-xl hover:shadow-purple-500/20 group transform hover:-translate-y-1">
               <img
                 :src="settings?.about_photo_url ?? settings?.profile_photo_url ?? 'https://ui-avatars.com/api/?name=Gilang+Purnomo&size=400&background=3b82f6&color=fff&bold=true'"
                 alt="Gilang Purnomo"
-                class="h-[380px] w-[300px] object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                class="h-[360px] w-[300px] object-cover object-top transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
               />
+              <div class="absolute inset-0 bg-gradient-to-br from-blue-500/0 via-purple-600/10 to-blue-700/10 group-hover:via-purple-600/20 transition-all duration-300 rounded-xl"></div>
             </div>
           </div>
         </div>
 
         <!-- Content -->
-        <div class="w-full lg:w-3/5 space-y-6">
-          <div v-if="settings" class="space-y-4">
-            <p class="text-gray-700 dark:text-gray-300 text-base leading-relaxed">
+        <div class="w-full lg:w-3/5 order-2 space-y-4 md:space-y-6 text-left pl-0 lg:-ml-6 xl:-ml-12">
+          <div v-if="settings" class="space-y-4 animate-fade-in" style="animation-delay: 0.2s">
+            <p class="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
               <span class="text-blue-600 dark:text-blue-400 font-semibold">
                 {{ currentLang === 'en' ? settings.about_title_en : settings.about_title_id }}
               </span>
               {{ currentLang === 'en' ? settings.about_bio_en : settings.about_bio_id }}
             </p>
-            <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+            <p class="text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
               {{ currentLang === 'en' ? settings.about_specialty_en : settings.about_specialty_id }}
             </p>
           </div>
@@ -60,41 +52,43 @@
           </div>
 
           <!-- Focus Cards - from about_cards table -->
-          <div v-if="!cardsLoading" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div v-if="!cardsLoading" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 animate-fade-in" style="animation-delay: 0.4s">
             <div
               v-for="card in cards"
               :key="card.id"
-              class="card-base p-4 hover:shadow-lg hover:-translate-y-1"
+              class="bg-white/90 dark:bg-gray-800/90 p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 backdrop-blur-sm border border-gray-100/30 dark:border-gray-700/30"
             >
               <div class="flex items-start gap-3">
-                <div class="p-2 rounded-lg" :class="iconColors[card.icon_type] ?? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'">
-                  <component :is="getIcon(card.icon_type)" class="w-5 h-5" />
+                <div class="p-2 bg-blue-100/80 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400 flex-shrink-0">
+                  <DynamicIcon :name="card.icon_type" class-name="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-semibold text-gray-800 dark:text-white mb-1">
+                  <h3 class="font-semibold text-gray-800 dark:text-white text-base mb-1">
                     {{ currentLang === 'en' ? card.title_en : card.title_id }}
-                  </h4>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                  </h3>
+                  <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
                     {{ currentLang === 'en' ? card.description_en : card.description_id }}
                   </p>
                 </div>
               </div>
             </div>
           </div>
-          <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <div v-for="i in 4" :key="i" class="skeleton h-24 rounded-xl" />
           </div>
 
           <!-- CV Download -->
-          <a
-            v-if="settings?.cv_url"
-            :href="settings.cv_url"
-            download
-            class="inline-flex items-center gap-2 btn-secondary text-sm"
-          >
-            <Download class="w-4 h-4" />
-            {{ t('Download CV', 'Unduh CV') }}
-          </a>
+          <div class="pt-2 animate-fade-in" style="animation-delay: 0.6s">
+            <a
+              v-if="settings?.cv_url"
+              :href="settings.cv_url"
+              download
+              class="inline-flex items-center gap-2 border-2 border-blue-500 dark:border-blue-400 text-blue-600 dark:text-blue-400 hover:text-white dark:hover:text-white px-4 py-2 md:px-5 md:py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-[1.03] hover:bg-blue-500 dark:hover:bg-blue-400 group"
+            >
+              <Download class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              {{ t('Download CV', 'Unduh CV') }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -103,26 +97,17 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Code2, Globe, ShieldCheck, Cpu, BrainCircuit, Download, User } from 'lucide-vue-next'
+import { Download } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
 import useLanguage from '@/composables/useLanguage'
 import useSiteSettings from '@/composables/useSiteSettings'
+import DynamicIcon from '@/components/common/DynamicIcon.vue'
 
 const { currentLang, t } = useLanguage()
 const { settings } = useSiteSettings()
 
 const cards = ref([])
 const cardsLoading = ref(true)
-
-const iconMap = { code: Code2, globe: Globe, shield: ShieldCheck, cpu: Cpu, brain: BrainCircuit }
-const iconColors = {
-  code: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
-  globe: 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400',
-  shield: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
-  cpu: 'bg-orange-100 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400',
-  brain: 'bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400',
-}
-const getIcon = (type) => iconMap[type] ?? Code2
 
 onMounted(async () => {
   const { data } = await supabase.from('about_cards').select('*').order('sort_order')

@@ -43,7 +43,7 @@
         </div>
       </div>
       <div v-if="uploadError.includes('not found') || uploadError.includes('bucket') || uploadError.includes('policy') || uploadError.includes('row-level')" class="p-2.5 bg-slate-950/80 rounded-lg border border-slate-800 text-[11px] font-mono text-slate-300 space-y-1">
-        <p class="text-blue-400 font-sans font-semibold">💡 Tips Solusi Supabase Storage:</p>
+        <p class="text-blue-400 font-sans font-semibold">Tips Solusi Supabase Storage:</p>
         <p class="font-sans text-[11px] text-slate-400">Jalankan SQL ini di <strong>SQL Editor Supabase</strong> untuk membuat Storage Bucket <code class="text-blue-300">portfolio-media</code> secara otomatis:</p>
         <div class="p-1.5 bg-black/60 rounded text-[10px] select-all overflow-x-auto text-emerald-400">
           INSERT INTO storage.buckets (id, name, public) VALUES ('portfolio-media', 'portfolio-media', true) ON CONFLICT DO NOTHING;<br/>

@@ -257,7 +257,11 @@
             :key="idx"
             class="flex items-center gap-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80"
           >
-            <div class="w-40 flex-shrink-0">
+            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-xl bg-slate-900 border border-slate-800 text-blue-400 shadow-sm mt-4" title="Preview Ikon Persis">
+              <DynamicIcon :name="link.icon || link.name || 'globe'" class-name="w-5 h-5" />
+            </div>
+
+            <div class="w-44 flex-shrink-0">
               <label class="block text-[10px] text-slate-500 font-semibold mb-1 uppercase">Platform / Ikon</label>
               <select v-model="link.name" @change="link.icon = link.name" class="input-admin !py-1.5 !text-xs">
                 <option value="GitHub">GitHub</option>
@@ -269,6 +273,13 @@
                 <option value="Discord">Discord</option>
                 <option value="Telegram">Telegram</option>
                 <option value="WhatsApp">WhatsApp</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Dribbble">Dribbble</option>
+                <option value="Figma">Figma</option>
+                <option value="GitLab">GitLab</option>
+                <option value="Medium">Medium</option>
+                <option value="Behance">Behance</option>
+                <option value="Email">Email / Mail</option>
                 <option value="Website">Website Lainnya</option>
               </select>
             </div>
@@ -295,6 +306,7 @@ import { ref, onMounted, computed } from 'vue'
 import { Save, Loader2, ImageIcon, Home, UserSquare2, Phone, Globe, Sparkles, Plus, Trash2, CheckCircle, AlertCircle, LayoutTemplate as LayoutBottom } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
 import ImageUploadInput from '@/components/admin/ImageUploadInput.vue'
+import DynamicIcon from '@/components/common/DynamicIcon.vue'
 
 const form = ref({})
 const isLoading = ref(true)
@@ -349,9 +361,20 @@ const save = async () => {
     if (tk) form.value.social_tiktok = tk.url
   }
 
-  const { error } = await supabase.from('site_settings').upsert({ ...form.value, id: 1 })
+  // 1. First try saving directly
+  let { error } = await supabase.from('site_settings').upsert({ ...form.value, id: 1 })
+
+  // 2. If Supabase throws schema cache error (e.g. social_links / normalized_social_links column doesn't exist in DB table), strip UI-only columns and retry safely
+  if (error && (error.message.includes('schema cache') || error.message.includes('social_links') || error.message.includes('normalized_social_links'))) {
+    const cleanPayload = { ...form.value, id: 1 }
+    delete cleanPayload.social_links
+    delete cleanPayload.normalized_social_links
+    const retry = await supabase.from('site_settings').upsert(cleanPayload)
+    error = retry.error
+  }
+
   if (error) showToast('error', 'Gagal menyimpan: ' + error.message)
-  else showToast('success', 'Perubahan berhasil disimpan! 🎉')
+  else showToast('success', 'Perubahan berhasil disimpan!')
   isSaving.value = false
 }
 </script>

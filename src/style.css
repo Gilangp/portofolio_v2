@@ -14,6 +14,8 @@
   --animate-fade-in-up: fadeInUp 0.4s ease-out forwards;
   --animate-wiggle: wiggle 2.5s ease-in-out infinite;
   --animate-pulse-slow: pulse 4s ease-in-out infinite;
+  --animate-underline: underlineWidth 1.2s ease-out forwards;
+  --animate-wave: wave 2s ease-in-out infinite;
 
   --keyframes-float: {
     0%, 100% { transform: translateY(0); }
@@ -35,6 +37,14 @@
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(8deg); }
     75% { transform: rotate(-8deg); }
+  };
+  --keyframes-underlineWidth: {
+    0% { width: 0; left: 50%; }
+    100% { width: 100%; left: 0; }
+  };
+  --keyframes-wave: {
+    0%, 100% { transform: translateX(-50%) scaleX(1); }
+    50% { transform: translateX(-50%) scaleX(1.3); }
   };
 }
 
@@ -415,3 +425,32 @@ body {
 
 .modal-enter-active, .modal-leave-active { transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
 .modal-enter-from, .modal-leave-to { opacity: 0; }
+
+.animate-underline {
+  animation: var(--animate-underline);
+}
+
+.animate-wave {
+  animation: var(--animate-wave);
+}
+
+.ripple-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-button .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  transform: scale(0);
+  animation: ripple-animation 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}

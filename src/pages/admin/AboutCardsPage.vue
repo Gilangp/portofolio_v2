@@ -17,7 +17,10 @@
         <div class="flex items-start justify-between gap-4">
           <div class="flex-1">
             <div class="flex items-center gap-2 mb-3">
-              <span class="px-2.5 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-mono font-medium rounded-lg">{{ c.icon_type }}</span>
+              <span class="px-2.5 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-mono font-medium rounded-lg flex items-center gap-1.5">
+                <DynamicIcon :name="c.icon_type" class-name="w-3.5 h-3.5" />
+                {{ c.icon_type }}
+              </span>
               <span class="text-xs text-slate-500 font-medium">urutan: #{{ c.sort_order }}</span>
             </div>
             <h3 class="text-sm font-bold text-slate-100">{{ c.title_en }} / {{ c.title_id }}</h3>
@@ -41,14 +44,42 @@
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-semibold text-slate-400 mb-1.5">Tipe Ikon</label>
-              <select v-model="form.icon_type" class="input-admin">
-                <option value="code">code (Web Dev)</option>
-                <option value="globe">globe (Network)</option>
-                <option value="shield">shield (QA/Testing)</option>
-                <option value="brain">brain (ML/AI)</option>
-                <option value="cpu">cpu (Hardware)</option>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="block text-xs font-semibold text-slate-400">Tipe Ikon</label>
+                <div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[11px] font-mono">
+                  <DynamicIcon :name="form.icon_type" class-name="w-3.5 h-3.5" />
+                  <span>Preview: {{ form.icon_type || 'code' }}</span>
+                </div>
+              </div>
+              <select v-model="form.icon_type" class="input-admin mb-2">
+                <option value="code">code / Code2 (Web Dev)</option>
+                <option value="globe">globe / Globe (Network / Web)</option>
+                <option value="shield">shield / ShieldCheck (QA / Security)</option>
+                <option value="brain">brain / BrainCircuit (AI / ML)</option>
+                <option value="cpu">cpu / Cpu (Hardware / IoT)</option>
+                <option value="server">server / Server (Backend / API)</option>
+                <option value="database">database / Database (SQL / NoSQL)</option>
+                <option value="smartphone">smartphone / Smartphone (Mobile Dev)</option>
+                <option value="cloud">cloud / Cloud (DevOps / AWS)</option>
+                <option value="terminal">terminal / Terminal (CLI / System)</option>
+                <option value="lock">lock / Lock (Cybersecurity)</option>
+                <option value="wifi">wifi / Wifi (Networking / Wireless)</option>
+                <option value="layers">layers / Layers (Architecture)</option>
+                <option value="monitor">monitor / Monitor (Desktop App)</option>
+                <option value="layout">layout / Layout (UI/UX Design)</option>
+                <option value="filecode">filecode / FileCode (Scripting)</option>
+                <option value="git">git / GitBranch (Version Control)</option>
+                <option value="wrench">wrench / Wrench (Maintenance / Tools)</option>
+                <option value="sparkles">sparkles / Sparkles (Special Features)</option>
+                <option value="boxes">boxes / Boxes (Modules / Microservices)</option>
+                <option value="workflow">workflow / Workflow (CI/CD Pipeline)</option>
               </select>
+              <input
+                v-model="form.icon_type"
+                type="text"
+                class="input-admin text-xs font-mono"
+                placeholder="Atau ketik nama ikon Lucide persis (contoh: TerminalSquare)"
+              />
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-400 mb-1.5">Urutan (Sort Order)</label>
@@ -93,6 +124,7 @@
 import { ref, onMounted } from 'vue'
 import { Plus, Pencil, Trash2, X, Save, Loader2 } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
+import DynamicIcon from '@/components/common/DynamicIcon.vue'
 
 const cards = ref([])
 const isLoading = ref(true)
