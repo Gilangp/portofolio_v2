@@ -6,7 +6,11 @@ const isDark = ref(
   (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
 )
 
-if (isDark.value) document.documentElement.classList.add('dark')
+if (isDark.value) {
+  document.documentElement.classList.add('dark')
+} else {
+  document.documentElement.classList.remove('dark')
+}
 
 export default function useDarkMode() {
   const toggle = () => {

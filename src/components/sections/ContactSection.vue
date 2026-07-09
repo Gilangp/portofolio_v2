@@ -1,13 +1,26 @@
 <template>
-  <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-950 transition-colors duration-500 relative overflow-hidden">
-    <div class="orb top-1/4 left-10 w-60 h-60 bg-blue-500/5" />
-    <div class="orb bottom-1/4 right-10 w-72 h-72 bg-purple-500/5" />
+  <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 bg-transparent transition-colors duration-500 relative overflow-hidden">
+    <div class="orb top-1/4 left-10 w-80 h-80 bg-blue-500/10 dark:bg-cyan-500/15" />
+    <div class="orb bottom-1/4 right-10 w-80 h-80 bg-purple-500/10 dark:bg-indigo-500/15" />
 
     <div class="max-w-6xl mx-auto relative z-10">
-      <div class="text-center mb-12">
-        <h2 class="section-title">{{ t("Let's Connect", 'Mari Terhubung') }}</h2>
-        <span class="inline-block w-16 h-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mt-2" />
-        <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm">
+      <!-- High-End Cyber-Satin Luxury Header -->
+      <div class="text-center mb-16 relative">
+        <div class="absolute inset-x-0 -top-6 flex justify-center pointer-events-none opacity-50 dark:opacity-35">
+          <div class="w-72 h-16 bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 blur-2xl rounded-full"></div>
+        </div>
+        <div class="relative inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 border border-blue-500/20 dark:border-cyan-500/25 backdrop-blur-md shadow-sm mb-4 transition-all hover:border-cyan-400/50">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-cyan-400 shadow-[0_0_8px_rgba(0,216,255,0.8)]"></span>
+          <span class="text-xs font-bold tracking-[0.18em] text-slate-800 dark:text-slate-200 uppercase">{{ t('Contact', 'Kolaborasi') }}</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+          {{ t("Let's", 'Mari') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cyan-400 dark:via-blue-500 dark:to-indigo-400 drop-shadow-[0_2px_12px_rgba(0,216,255,0.25)]">{{ t('Connect', 'Terhubung') }}</span>
+        </h2>
+        <div class="flex items-center justify-center gap-2 mt-5">
+          <span class="w-2 h-2 rounded-full bg-blue-600 dark:bg-cyan-400 shadow-[0_0_10px_rgba(0,216,255,0.8)]"></span>
+          <span class="w-24 h-1 rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-transparent dark:from-cyan-400 dark:via-blue-500 dark:to-transparent"></span>
+        </div>
+        <p class="mt-4 text-slate-600 dark:text-slate-400 text-sm max-w-lg mx-auto leading-relaxed">
           {{ t("Have a project in mind? Let's bring your ideas to life.", 'Punya proyek atau ide? Mari terhubung dan wujudkan bersama.') }}
         </p>
       </div>
@@ -19,27 +32,38 @@
             <MessageSquare class="w-5 h-5 text-blue-500" />
             {{ t('Send Me a Message', 'Kirim Pesan') }}
           </h3>
-          <form @submit.prevent="submitForm" class="space-y-4">
+          <form @submit.prevent="submitForm" class="space-y-4" novalidate>
             <div>
               <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{{ t('Your Name *', 'Nama Anda *') }}</label>
-              <input v-model="form.name" type="text" required minlength="2" class="input-base" :placeholder="t('Enter your name', 'Masukkan nama Anda')" />
-              <p v-if="errors.name" class="text-xs text-red-500 mt-1">{{ errors.name }}</p>
+              <input v-model="form.name" type="text" @input="errors.name = ''" class="input-base" :class="errors.name ? 'border-red-500 dark:border-red-500 focus:ring-red-500' : ''" :placeholder="t('Enter your name', 'Masukkan nama Anda')" />
+              <p v-if="errors.name" class="text-xs text-red-500 mt-1.5 font-medium flex items-center gap-1">
+                <XCircle class="w-3.5 h-3.5" /> {{ errors.name }}
+              </p>
             </div>
             <div>
               <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{{ t('Email Address *', 'Alamat Email *') }}</label>
-              <input v-model="form.email" type="email" required class="input-base" placeholder="your@email.com" @blur="validateEmail" />
-              <p v-if="errors.email" class="text-xs text-red-500 mt-1">{{ errors.email }}</p>
+              <input v-model="form.email" type="email" @input="errors.email = ''" class="input-base" :class="errors.email ? 'border-red-500 dark:border-red-500 focus:ring-red-500' : ''" placeholder="your@email.com" />
+              <p v-if="errors.email" class="text-xs text-red-500 mt-1.5 font-medium flex items-center gap-1">
+                <XCircle class="w-3.5 h-3.5" /> {{ errors.email }}
+              </p>
             </div>
             <div>
               <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">{{ t('Your Message *', 'Pesan Anda *') }}</label>
-              <textarea v-model="form.message" rows="4" required minlength="10" class="input-base resize-none" :placeholder="t('Tell me about your project...', 'Ceritakan tentang proyek Anda...')" />
-              <p v-if="errors.message" class="text-xs text-red-500 mt-1">{{ errors.message }}</p>
+              <textarea v-model="form.message" rows="4" @input="errors.message = ''" class="input-base resize-none" :class="errors.message ? 'border-red-500 dark:border-red-500 focus:ring-red-500' : ''" :placeholder="t('Tell me about your project...', 'Ceritakan tentang proyek Anda...')" />
+              <p v-if="errors.message" class="text-xs text-red-500 mt-1.5 font-medium flex items-center gap-1">
+                <XCircle class="w-3.5 h-3.5" /> {{ errors.message }}
+              </p>
             </div>
-            <button type="submit" :disabled="isSubmitting || !isFormValid" class="btn-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed">
-              <span v-if="!isSubmitting" class="flex items-center gap-2">
+            <button
+              type="submit"
+              :disabled="isSubmitting || !isFormValid"
+              class="btn-primary w-full justify-center transition-all duration-300"
+              :class="!isFormValid ? 'opacity-50 cursor-not-allowed !bg-gray-600 !shadow-none' : 'shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30'"
+            >
+              <span v-if="!isSubmitting" class="flex items-center gap-2 font-bold">
                 <Send class="w-4 h-4" /> {{ t('Send Message', 'Kirim Pesan') }}
               </span>
-              <span v-else class="flex items-center gap-2">
+              <span v-else class="flex items-center gap-2 font-bold">
                 <Loader2 class="w-4 h-4 animate-spin" /> {{ t('Sending...', 'Mengirim...') }}
               </span>
             </button>
@@ -56,7 +80,7 @@
             <div class="space-y-3">
               <div class="flex items-center gap-3 text-sm">
                 <div class="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-blue-500"><Mail class="w-4 h-4" /></div>
-                <a :href="`mailto:${settings?.contact_email}`" class="text-blue-500 hover:text-blue-600 text-xs font-medium">
+                <a :href="`mailto:${settings?.contact_email ?? 'gilangpurnomo0505@gmail.com'}`" class="text-blue-500 hover:text-blue-600 text-xs font-medium truncate">
                   {{ settings?.contact_email ?? 'gilangpurnomo0505@gmail.com' }}
                 </a>
               </div>
@@ -87,7 +111,7 @@
                 target="_blank"
                 class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/80 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-500 transition-colors text-xs font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-blue-500/20"
               >
-                <component :is="getSocialIcon(link.icon || link.name)" class="w-4 h-4 text-blue-500" />
+                <component :is="getSocialIcon(link.icon || link.name)" class="w-4 h-4 text-blue-500 flex-shrink-0" />
                 <span class="truncate">{{ link.name || link.label }}</span>
               </a>
             </div>
@@ -138,37 +162,77 @@ const errors = ref({ name: '', email: '', message: '' })
 const isSubmitting = ref(false)
 const toast = ref({ show: false, type: 'success', message: '' })
 
+const isFormValid = computed(() => {
+  const nameValid = form.value.name.trim().length >= 2
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email.trim())
+  const msgValid = form.value.message.trim().length >= 5
+  return nameValid && emailValid && msgValid
+})
+
 const showToast = (type, message) => {
   toast.value = { show: true, type, message }
-  setTimeout(() => (toast.value.show = false), 4000)
+  setTimeout(() => (toast.value.show = false), 4500)
 }
 
-const validateEmail = () => {
-  const email = form.value.email.trim()
-  errors.value.email = ''
-  if (!email) return (errors.value.email = t('Email is required', 'Email wajib diisi'))
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return (errors.value.email = t('Invalid email format', 'Format email tidak valid'))
-}
+const validate = () => {
+  let valid = true
+  errors.value = { name: '', email: '', message: '' }
 
-const isFormValid = computed(() =>
-  form.value.name.trim().length >= 2 && form.value.email.trim().length > 0 && form.value.message.trim().length >= 10 && !errors.value.email
-)
+  if (form.value.name.trim().length < 2) {
+    errors.value.name = t('Please enter your name (min 2 characters)', 'Mohon masukkan nama Anda (minimal 2 karakter)')
+    valid = false
+  }
+  if (!form.value.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.email.trim())) {
+    errors.value.email = t('Please enter a valid email address', 'Mohon masukkan format email yang valid (contoh: nama@domain.com)')
+    valid = false
+  }
+  if (form.value.message.trim().length < 5) {
+    errors.value.message = t('Message must be at least 5 characters', 'Pesan minimal 5 karakter')
+    valid = false
+  }
+  return valid
+}
 
 const submitForm = async () => {
-  validateEmail()
-  if (!isFormValid.value) return showToast('error', t('Please fill all fields correctly.', 'Mohon isi semua kolom dengan benar.'))
+  if (!validate()) return
+
   isSubmitting.value = true
   try {
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    const targetEmail = settings.value?.contact_email ?? 'gilangpurnomo0505@gmail.com'
+
+    if (!serviceId || !templateId || !publicKey) {
+      window.location.href = `mailto:${targetEmail}?subject=Pesan Portofolio dari ${encodeURIComponent(form.value.name)}&body=${encodeURIComponent(form.value.message + '\n\nDari: ' + form.value.name + ' (' + form.value.email + ')')}`
+      form.value = { name: '', email: '', message: '' }
+      showToast('success', t('Opening your email app to send message.', 'Membuka aplikasi email Anda untuk mengirim pesan.'))
+      isSubmitting.value = false
+      return
+    }
+
     await emailjs.send(
-      import.meta.env.VITE_EMAILJS_SERVICE_ID,
-      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-      { from_name: form.value.name, from_email: form.value.email, message: form.value.message, to_email: settings.value?.contact_email ?? 'gilangpurnomo0505@gmail.com', reply_to: form.value.email },
-      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      serviceId,
+      templateId,
+      { 
+        name: form.value.name, 
+        from_name: form.value.name, 
+        email: form.value.email, 
+        from_email: form.value.email, 
+        message: form.value.message, 
+        time: new Date().toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'short' }),
+        to_email: targetEmail, 
+        reply_to: form.value.email 
+      },
+      publicKey
     )
     form.value = { name: '', email: '', message: '' }
-    showToast('success', t('Message sent successfully! 🎉', 'Pesan berhasil terkirim! 🎉'))
-  } catch {
-    showToast('error', t('Failed to send. Please try again.', 'Gagal mengirim pesan. Coba lagi.'))
+    showToast('success', t('Message sent successfully.', 'Pesan berhasil terkirim.'))
+  } catch (err) {
+    console.error('EmailJS Error:', err)
+    showToast('error', t('Failed to send via server. Trying email app...', 'Gagal mengirim lewat server. Mencoba membuka aplikasi email...'))
+    const targetEmail = settings.value?.contact_email ?? 'gilangpurnomo0505@gmail.com'
+    window.location.href = `mailto:${targetEmail}?subject=Pesan Portofolio dari ${encodeURIComponent(form.value.name)}&body=${encodeURIComponent(form.value.message + '\n\nDari: ' + form.value.name + ' (' + form.value.email + ')')}`
   } finally {
     isSubmitting.value = false
   }

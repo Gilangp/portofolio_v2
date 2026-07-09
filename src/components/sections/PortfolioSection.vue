@@ -1,15 +1,27 @@
 <template>
-  <section id="portfolio" class="py-20 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900 transition-colors duration-500 relative overflow-hidden">
-    <div class="orb top-1/4 left-1/5 w-60 h-60 bg-blue-500/5" />
-    <div class="orb bottom-1/3 right-1/4 w-72 h-72 bg-purple-500/5" />
+  <section id="portfolio" class="py-20 px-4 sm:px-6 lg:px-8 bg-white/40 dark:bg-[#070a13]/40 backdrop-blur-sm transition-colors duration-500 relative overflow-hidden">
+    <div class="orb top-1/4 left-1/5 w-80 h-80 bg-blue-500/10 dark:bg-cyan-500/15" />
+    <div class="orb bottom-1/3 right-1/4 w-80 h-80 bg-purple-500/10 dark:bg-indigo-500/15" />
 
     <div class="max-w-7xl mx-auto relative z-10">
-      <!-- Title -->
-      <div class="text-center mb-12">
-        <h2 class="section-title">{{ t('My Projects', 'Proyek Saya') }}</h2>
-        <span class="inline-block w-16 h-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mt-2" />
-        <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm">
-          {{ t('Click on any project to see details.', 'Klik proyek untuk melihat detail.') }}
+      <!-- High-End Cyber-Satin Luxury Header -->
+      <div class="text-center mb-16 relative">
+        <div class="absolute inset-x-0 -top-6 flex justify-center pointer-events-none opacity-50 dark:opacity-35">
+          <div class="w-72 h-16 bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400 blur-2xl rounded-full"></div>
+        </div>
+        <div class="relative inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/60 dark:bg-slate-900/60 border border-blue-500/20 dark:border-cyan-500/25 backdrop-blur-md shadow-sm mb-4 transition-all hover:border-cyan-400/50">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-cyan-400 shadow-[0_0_8px_rgba(0,216,255,0.8)]"></span>
+          <span class="text-xs font-bold tracking-[0.18em] text-slate-800 dark:text-slate-200 uppercase">{{ t('Showcase', 'Portofolio') }}</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+          {{ t('Featured', 'Proyek') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cyan-400 dark:via-blue-500 dark:to-indigo-400 drop-shadow-[0_2px_12px_rgba(0,216,255,0.25)]">{{ t('Projects', 'Unggulan') }}</span>
+        </h2>
+        <div class="flex items-center justify-center gap-2 mt-5">
+          <span class="w-2 h-2 rounded-full bg-blue-600 dark:bg-cyan-400 shadow-[0_0_10px_rgba(0,216,255,0.8)]"></span>
+          <span class="w-24 h-1 rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-transparent dark:from-cyan-400 dark:via-blue-500 dark:to-transparent"></span>
+        </div>
+        <p class="mt-4 text-slate-600 dark:text-slate-400 text-sm max-w-lg mx-auto leading-relaxed">
+          {{ t('Click on any project to see details.', 'Klik proyek untuk melihat detail spesifikasi dan demo.') }}
         </p>
       </div>
 
@@ -113,7 +125,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { X, Calendar, Layers, Users, CheckCircle, ExternalLink, Code2 } from 'lucide-vue-next'
+import { X, Calendar, Layers, Users, CheckCircle, ExternalLink, Code2, Sparkles } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
 import useLanguage from '@/composables/useLanguage'
 

@@ -1,9 +1,9 @@
 <template>
-  <section id="home" class="min-h-screen relative overflow-hidden flex items-center bg-gray-50 dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 transition-colors duration-500">
+  <section id="home" class="min-h-screen relative overflow-hidden flex items-center bg-transparent transition-colors duration-500">
     <!-- Background orbs -->
-    <div class="orb top-20 left-10 w-72 h-72 bg-blue-400/10" />
-    <div class="orb bottom-1/4 right-16 w-80 h-80 bg-purple-600/10" />
-    <div class="orb top-1/3 right-1/4 w-48 h-48 bg-blue-500/10" />
+    <div class="orb top-20 left-10 w-96 h-96 bg-blue-500/15 dark:bg-cyan-500/20 animate-pulse-slow" />
+    <div class="orb bottom-1/4 right-16 w-96 h-96 bg-purple-500/15 dark:bg-indigo-500/20 animate-pulse-slow" />
+    <div class="orb top-1/3 right-1/4 w-72 h-72 bg-pink-500/10 dark:bg-purple-500/15" />
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 relative z-10">
       <div class="flex flex-col lg:flex-row items-center justify-between gap-12">

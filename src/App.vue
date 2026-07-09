@@ -58,10 +58,6 @@ onMounted(() => {
 </script>
 
 <style>
-body {
-  background-color: #090d16 !important;
-  color: #f8fafc;
-}
 
 .loader-fade-enter-active,
 .loader-fade-leave-active {
