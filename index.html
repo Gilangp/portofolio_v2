@@ -1,13 +1,44 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>portofoliov2</title>
+    <title>Gilang Purnomo — Portofolio</title>
+    <style>
+      /* Pre-mount loader animations and zero-flash styles */
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #090d16 !important;
+        color: #f8fafc;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        overflow-x: hidden;
+      }
+      @keyframes pre-spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes pre-pulse {
+        0%, 100% { opacity: 0.5; transform: scale(0.98); }
+        50% { opacity: 1; transform: scale(1.02); }
+      }
+    </style>
   </head>
-  <body>
-    <div id="app"></div>
+  <body class="bg-[#090d16] text-slate-100 antialiased selection:bg-blue-500 selection:text-white">
+    <div id="app">
+      <!-- Instant Pre-mount Loading Screen (Zero White Flash) -->
+      <div style="min-height: 100vh; width: 100vw; display: flex; flex-direction: column; items-center; align-items: center; justify-content: center; background-color: #090d16;">
+        <div style="position: relative; width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+          <!-- Glowing spinner ring -->
+          <div style="position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(59, 130, 246, 0.15); border-top-color: #3b82f6; border-right-color: #6366f1; animation: pre-spin 0.9s cubic-bezier(0.4, 0, 0.2, 1) infinite; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);"></div>
+          <!-- Center brand text -->
+          <span style="font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #60a5fa, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pre-pulse 1.8s ease-in-out infinite;">GP</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #94a3b8; animation: pre-pulse 1.8s ease-in-out infinite;">
+          Memuat Portofolio...
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

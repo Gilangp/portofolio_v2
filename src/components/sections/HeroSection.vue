@@ -26,19 +26,18 @@
             {{ currentLang === 'en' ? (settings?.hero_desc_en ?? '') : (settings?.hero_desc_id ?? '') }}
           </p>
 
-          <!-- Social Links -->
-          <div class="flex items-center justify-center lg:justify-start gap-3">
-            <a v-if="settings?.social_github" :href="settings.social_github" target="_blank" aria-label="GitHub"
-              class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all duration-300 hover:scale-110 shadow">
-              <Github class="w-5 h-5" />
-            </a>
-            <a v-if="settings?.social_linkedin" :href="settings.social_linkedin" target="_blank" aria-label="LinkedIn"
-              class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110 shadow">
-              <Linkedin class="w-5 h-5" />
-            </a>
-            <a v-if="settings?.social_instagram" :href="settings.social_instagram" target="_blank" aria-label="Instagram"
-              class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-pink-500 dark:text-pink-400 hover:bg-gradient-to-br hover:from-pink-500 hover:to-orange-400 hover:text-white transition-all duration-300 hover:scale-110 shadow">
-              <Instagram class="w-5 h-5" />
+          <!-- Dynamic Social Links -->
+          <div class="flex items-center justify-center lg:justify-start gap-3 flex-wrap">
+            <a
+              v-for="(link, idx) in (settings?.normalized_social_links || [])"
+              :key="idx"
+              :href="link.url"
+              target="_blank"
+              :aria-label="link.name || link.label"
+              class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110 shadow group"
+              :title="link.name || link.label"
+            >
+              <component :is="getSocialIcon(link.icon || link.name)" class="w-5 h-5 group-hover:scale-110 transition-transform" />
             </a>
           </div>
 
@@ -73,12 +72,27 @@
 
 <script setup>
 import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
-import { Github, Linkedin, Instagram } from 'lucide-vue-next'
+import { Github, Linkedin, Instagram, Twitter, Youtube, MessageSquare, Send, Globe, MessageCircle, Phone, Share2 } from 'lucide-vue-next'
 import useLanguage from '@/composables/useLanguage'
 import useSiteSettings from '@/composables/useSiteSettings'
 
 const { currentLang, t } = useLanguage()
 const { settings } = useSiteSettings()
+
+// Icon resolver helper for dynamic social links
+const getSocialIcon = (iconName = '') => {
+  const name = iconName.toLowerCase()
+  if (name.includes('github')) return Github
+  if (name.includes('linkedin')) return Linkedin
+  if (name.includes('instagram')) return Instagram
+  if (name.includes('twitter') || name.includes('x')) return Twitter
+  if (name.includes('youtube')) return Youtube
+  if (name.includes('discord')) return MessageSquare
+  if (name.includes('telegram')) return Send
+  if (name.includes('whatsapp') || name.includes('wa')) return MessageCircle
+  if (name.includes('phone') || name.includes('tel')) return Phone
+  return Globe || Share2
+}
 
 const scrollTo = (id) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })

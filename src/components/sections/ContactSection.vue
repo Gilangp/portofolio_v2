@@ -73,25 +73,22 @@
             </div>
           </div>
 
-          <!-- Social -->
+          <!-- Dynamic Social -->
           <div class="card-base p-5 hover:shadow-xl">
             <h3 class="text-base font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
               <Globe class="w-5 h-5 text-blue-500" />
               {{ t('Follow Me', 'Ikuti Saya') }}
             </h3>
             <div class="grid grid-cols-2 gap-2">
-              <a v-if="settings?.social_github" :href="settings.social_github" target="_blank" class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-xs font-medium text-gray-700 dark:text-gray-300">
-                <Github class="w-4 h-4" /> GitHub
-              </a>
-              <a v-if="settings?.social_linkedin" :href="settings.social_linkedin" target="_blank" class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors text-xs font-medium text-gray-700 dark:text-gray-300">
-                <Linkedin class="w-4 h-4 text-blue-600" /> LinkedIn
-              </a>
-              <a v-if="settings?.social_instagram" :href="settings.social_instagram" target="_blank" class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-pink-50 dark:hover:bg-pink-900/20 transition-colors text-xs font-medium text-gray-700 dark:text-gray-300">
-                <Instagram class="w-4 h-4 text-pink-500" /> Instagram
-              </a>
-              <a v-if="settings?.social_tiktok" :href="settings.social_tiktok" target="_blank" class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors text-xs font-medium text-gray-700 dark:text-gray-300">
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-                TikTok
+              <a
+                v-for="(link, idx) in (settings?.normalized_social_links || [])"
+                :key="idx"
+                :href="link.url"
+                target="_blank"
+                class="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50 dark:bg-gray-800/80 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-500 transition-colors text-xs font-medium text-gray-700 dark:text-gray-300 border border-transparent hover:border-blue-500/20"
+              >
+                <component :is="getSocialIcon(link.icon || link.name)" class="w-4 h-4 text-blue-500" />
+                <span class="truncate">{{ link.name || link.label }}</span>
               </a>
             </div>
           </div>
@@ -114,12 +111,27 @@
 <script setup>
 import { ref, computed } from 'vue'
 import emailjs from 'emailjs-com'
-import { MessageSquare, Send, Loader2, Phone, Mail, MapPin, Clock, Globe, Github, Linkedin, Instagram, CheckCircle, XCircle } from 'lucide-vue-next'
+import { MessageSquare, Send, Loader2, Phone, Mail, MapPin, Clock, Globe, Github, Linkedin, Instagram, Twitter, Youtube, MessageCircle, Share2, CheckCircle, XCircle } from 'lucide-vue-next'
 import useLanguage from '@/composables/useLanguage'
 import useSiteSettings from '@/composables/useSiteSettings'
 
 const { currentLang, t } = useLanguage()
 const { settings } = useSiteSettings()
+
+// Icon resolver helper
+const getSocialIcon = (iconName = '') => {
+  const name = iconName.toLowerCase()
+  if (name.includes('github')) return Github
+  if (name.includes('linkedin')) return Linkedin
+  if (name.includes('instagram')) return Instagram
+  if (name.includes('twitter') || name.includes('x')) return Twitter
+  if (name.includes('youtube')) return Youtube
+  if (name.includes('discord')) return MessageSquare
+  if (name.includes('telegram')) return Send
+  if (name.includes('whatsapp') || name.includes('wa')) return MessageCircle
+  if (name.includes('phone') || name.includes('tel')) return Phone
+  return Globe || Share2
+}
 
 const form = ref({ name: '', email: '', message: '' })
 const errors = ref({ name: '', email: '', message: '' })

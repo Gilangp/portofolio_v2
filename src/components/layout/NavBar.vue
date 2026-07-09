@@ -6,9 +6,12 @@
       : 'bg-transparent py-5'"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="#home" @click.prevent="scrollTo('home')" class="text-2xl font-black text-gradient hover:opacity-80 transition-opacity">
-        GP
+      <!-- Dynamic Logo -->
+      <a href="#home" @click.prevent="scrollTo('home')" class="flex items-center gap-2.5 hover:opacity-85 transition-opacity">
+        <img v-if="settings?.site_logo_url" :src="settings.site_logo_url" :alt="settings?.site_logo_text || 'Logo'" class="h-9 w-auto max-w-[140px] object-contain" />
+        <span v-else class="text-2xl font-black text-gradient">
+          {{ settings?.site_logo_text || 'GP' }}
+        </span>
       </a>
 
       <!-- Desktop Nav -->
@@ -85,9 +88,11 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { Sun, Moon, Menu, X } from 'lucide-vue-next'
 import useLanguage from '@/composables/useLanguage'
 import useDarkMode from '@/composables/useDarkMode'
+import useSiteSettings from '@/composables/useSiteSettings'
 
 const { currentLang, toggleLanguage, t } = useLanguage()
 const { isDark, toggle: toggleDark } = useDarkMode()
+const { settings } = useSiteSettings()
 
 const scrolled = ref(false)
 const mobileOpen = ref(false)

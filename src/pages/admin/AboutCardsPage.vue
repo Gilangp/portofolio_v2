@@ -2,30 +2,30 @@
   <div class="space-y-6">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-xl font-bold text-white">Kartu About Me</h2>
-        <p class="text-sm text-gray-400 mt-1">{{ cards.length }} kartu tersimpan (tampil di halaman About)</p>
+        <h2 class="text-xl font-bold text-slate-100">Manajemen Kartu Fokus (About Cards)</h2>
+        <p class="text-sm text-slate-400 mt-1">{{ cards.length }} kartu tersimpan (tampil di grid halaman About Me)</p>
       </div>
-      <button @click="openForm()" class="btn-admin"><Plus class="w-4 h-4" /> Tambah Kartu</button>
+      <button @click="openForm()" class="btn-admin"><Plus class="w-4 h-4" /> Tambah Kartu Baru</button>
     </div>
 
     <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div v-for="i in 4" :key="i" class="skeleton h-32 rounded-xl" />
+      <div v-for="i in 4" :key="i" class="skeleton h-32 rounded-2xl" />
     </div>
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div v-for="c in cards" :key="c.id"
-        class="bg-gray-900 border border-gray-800 rounded-xl p-4 hover:border-gray-700 transition-colors">
-        <div class="flex items-start justify-between gap-3">
+        class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-5 hover:border-slate-700 transition-colors shadow-sm">
+        <div class="flex items-start justify-between gap-4">
           <div class="flex-1">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="px-2 py-0.5 bg-violet-900/40 text-violet-400 text-xs font-mono rounded">{{ c.icon_type }}</span>
-              <span class="text-xs text-gray-500">order: {{ c.sort_order }}</span>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="px-2.5 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-mono font-medium rounded-lg">{{ c.icon_type }}</span>
+              <span class="text-xs text-slate-500 font-medium">urutan: #{{ c.sort_order }}</span>
             </div>
-            <h3 class="text-sm font-semibold text-white">{{ c.title_en }} / {{ c.title_id }}</h3>
-            <p class="text-xs text-gray-400 mt-1 line-clamp-2">{{ c.description_en }}</p>
+            <h3 class="text-sm font-bold text-slate-100">{{ c.title_en }} / {{ c.title_id }}</h3>
+            <p class="text-xs text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">{{ c.description_en }}</p>
           </div>
           <div class="flex gap-1.5 flex-shrink-0">
-            <button @click="openForm(c)" class="p-1.5 rounded-lg bg-gray-800 hover:bg-violet-900/40 hover:text-violet-400 text-gray-500 transition-colors"><Pencil class="w-4 h-4" /></button>
-            <button @click="deleteCard(c.id)" class="p-1.5 rounded-lg bg-gray-800 hover:bg-red-900/40 hover:text-red-400 text-gray-500 transition-colors"><Trash2 class="w-4 h-4" /></button>
+            <button @click="openForm(c)" class="p-2 rounded-xl bg-slate-800 hover:bg-blue-600/20 hover:text-blue-400 text-slate-400 transition-colors border border-slate-700/60" title="Edit"><Pencil class="w-4 h-4" /></button>
+            <button @click="deleteCard(c.id)" class="p-2 rounded-xl bg-slate-800 hover:bg-rose-600/20 hover:text-rose-400 text-slate-400 transition-colors border border-slate-700/60" title="Hapus"><Trash2 class="w-4 h-4" /></button>
           </div>
         </div>
       </div>
@@ -33,16 +33,16 @@
 
     <!-- Form Modal -->
     <Transition name="modal">
-      <div v-if="showForm" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm" @click.self="showForm = false">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg shadow-2xl p-6 space-y-4">
+      <div v-if="showForm" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm" @click.self="showForm = false">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg shadow-2xl p-6 space-y-4">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="text-base font-bold text-white">{{ editingId ? 'Edit Kartu' : 'Tambah Kartu' }}</h3>
-            <button @click="showForm = false" class="text-gray-500 hover:text-gray-300"><X class="w-5 h-5" /></button>
+            <h3 class="text-base font-bold text-slate-100">{{ editingId ? 'Edit Kartu Fokus' : 'Tambah Kartu Baru' }}</h3>
+            <button @click="showForm = false" class="text-slate-500 hover:text-slate-300"><X class="w-5 h-5" /></button>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs text-gray-400 mb-1">Tipe Ikon</label>
-              <select v-model="form.icon_type" class="input-base bg-gray-800 border-gray-700 text-white">
+              <label class="block text-xs font-semibold text-slate-400 mb-1.5">Tipe Ikon</label>
+              <select v-model="form.icon_type" class="input-admin">
                 <option value="code">code (Web Dev)</option>
                 <option value="globe">globe (Network)</option>
                 <option value="shield">shield (QA/Testing)</option>
@@ -51,36 +51,36 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs text-gray-400 mb-1">Sort Order</label>
-              <input v-model.number="form.sort_order" type="number" class="input-base bg-gray-800 border-gray-700 text-white" />
+              <label class="block text-xs font-semibold text-slate-400 mb-1.5">Urutan (Sort Order)</label>
+              <input v-model.number="form.sort_order" type="number" class="input-admin" />
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs text-gray-400 mb-1">Judul (EN)</label>
-              <input v-model="form.title_en" type="text" class="input-base bg-gray-800 border-gray-700 text-white" />
+              <label class="block text-xs font-semibold text-slate-400 mb-1.5">Judul (English)</label>
+              <input v-model="form.title_en" type="text" class="input-admin" placeholder="Web Development" />
             </div>
             <div>
-              <label class="block text-xs text-gray-400 mb-1">Judul (ID)</label>
-              <input v-model="form.title_id" type="text" class="input-base bg-gray-800 border-gray-700 text-white" />
+              <label class="block text-xs font-semibold text-slate-400 mb-1.5">Judul (Indonesia)</label>
+              <input v-model="form.title_id" type="text" class="input-admin" placeholder="Pengembangan Web" />
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs text-gray-400 mb-1">Deskripsi (EN)</label>
-              <textarea v-model="form.description_en" rows="3" class="input-base bg-gray-800 border-gray-700 text-white resize-none" />
+              <label class="block text-xs font-semibold text-slate-400 mb-1.5">Deskripsi (English)</label>
+              <textarea v-model="form.description_en" rows="3" class="input-admin resize-none" placeholder="Building responsive web..." />
             </div>
             <div>
-              <label class="block text-xs text-gray-400 mb-1">Deskripsi (ID)</label>
-              <textarea v-model="form.description_id" rows="3" class="input-base bg-gray-800 border-gray-700 text-white resize-none" />
+              <label class="block text-xs font-semibold text-slate-400 mb-1.5">Deskripsi (Indonesia)</label>
+              <textarea v-model="form.description_id" rows="3" class="input-admin resize-none" placeholder="Membangun web responsif..." />
             </div>
           </div>
-          <div class="flex gap-3 justify-end pt-2">
-            <button @click="showForm = false" class="px-4 py-2 text-sm text-gray-400 hover:text-white">Batal</button>
+          <div class="flex gap-3 justify-end pt-3">
+            <button @click="showForm = false" class="px-4 py-2 text-sm text-slate-400 hover:text-white transition-colors">Batal</button>
             <button @click="saveCard" :disabled="isSaving" class="btn-admin">
               <Loader2 v-if="isSaving" class="w-4 h-4 animate-spin" />
               <Save v-else class="w-4 h-4" />
-              Simpan
+              Simpan Kartu
             </button>
           </div>
         </div>
@@ -140,6 +140,6 @@ onMounted(load)
 </script>
 
 <style scoped>
-.modal-enter-active, .modal-leave-active { transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+.modal-enter-active, .modal-leave-active { transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
 .modal-enter-from, .modal-leave-to { opacity: 0; }
 </style>

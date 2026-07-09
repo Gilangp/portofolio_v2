@@ -1,13 +1,16 @@
 <template>
-  <div class="min-h-screen bg-gray-950 text-white flex">
+  <div class="min-h-screen bg-[#090d16] text-slate-100 flex font-sans">
     <!-- Sidebar -->
-    <aside class="w-64 bg-gray-900 border-r border-gray-800 flex flex-col fixed h-screen">
-      <div class="p-6 border-b border-gray-800">
-        <RouterLink to="/" class="flex items-center gap-2 group">
-          <span class="text-2xl font-black text-gradient">GP</span>
+    <aside class="w-64 bg-slate-900/90 border-r border-slate-800/80 flex flex-col fixed h-screen backdrop-blur-xl z-20">
+      <div class="p-6 border-b border-slate-800/80 flex items-center justify-between">
+        <RouterLink to="/" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform overflow-hidden p-1.5">
+            <img v-if="settings?.site_logo_url" :src="settings.site_logo_url" :alt="settings?.site_logo_text || 'Logo'" class="w-full h-full object-contain" />
+            <span v-else class="text-lg font-black text-white">{{ settings?.site_logo_text || 'GP' }}</span>
+          </div>
           <div>
-            <p class="text-xs font-semibold text-gray-300">Admin Panel</p>
-            <p class="text-xs text-gray-500">Portfolio V2</p>
+            <p class="text-sm font-bold text-slate-100 leading-tight">Admin Portal</p>
+            <p class="text-[11px] text-slate-400">Portfolio V2</p>
           </div>
         </RouterLink>
       </div>
@@ -17,41 +20,51 @@
           v-for="item in navItems"
           :key="item.to"
           :to="item.to"
-          class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-200"
-          active-class="bg-gradient-to-r from-violet-600/20 to-indigo-600/20 !text-violet-300 border-r-2 border-violet-500"
+          class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-all duration-200"
+          active-class="bg-blue-600/15 !text-blue-400 border-l-2 border-blue-500 font-semibold shadow-sm"
         >
-          <component :is="item.icon" class="w-4 h-4" />
+          <component :is="item.icon" class="w-4 h-4 flex-shrink-0" />
           {{ item.label }}
         </RouterLink>
       </nav>
 
-      <div class="p-4 border-t border-gray-800">
-        <div class="flex items-center gap-3 mb-3">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-xs font-bold">
-            A
+      <div class="p-4 border-t border-slate-800/80 space-y-3">
+        <div class="flex items-center gap-3 px-2 py-1">
+          <div class="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-blue-400">
+            {{ userInitial }}
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-xs font-medium text-gray-300 truncate">{{ userEmail }}</p>
-            <p class="text-xs text-gray-500">Administrator</p>
+            <p class="text-xs font-semibold text-slate-200 truncate">{{ userEmail }}</p>
+            <p class="text-[11px] text-slate-500">Administrator</p>
           </div>
         </div>
-        <button @click="logout" class="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg transition-all duration-200">
-          <LogOut class="w-4 h-4" />
-          Logout
+        <button
+          @click="logout"
+          class="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-xl transition-all duration-200"
+        >
+          <LogOut class="w-3.5 h-3.5" />
+          Keluar (Logout)
         </button>
       </div>
     </aside>
 
     <!-- Main content -->
-    <div class="flex-1 ml-64 flex flex-col">
-      <header class="sticky top-0 z-10 bg-gray-950/80 backdrop-blur-sm border-b border-gray-800 px-6 py-3 flex items-center justify-between">
-        <h1 class="text-sm font-semibold text-gray-300">{{ currentRouteName }}</h1>
-        <RouterLink to="/" target="_blank" class="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-300 transition-colors">
-          <ExternalLink class="w-3.5 h-3.5" />
-          Lihat Website
+    <div class="flex-1 ml-64 flex flex-col min-h-screen">
+      <header class="sticky top-0 z-10 bg-[#090d16]/80 backdrop-blur-md border-b border-slate-800/80 px-8 py-4 flex items-center justify-between">
+        <div>
+          <h1 class="text-base font-bold text-slate-200">{{ currentRouteName }}</h1>
+        </div>
+        <RouterLink
+          to="/"
+          target="_blank"
+          class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition-all shadow-sm"
+        >
+          <ExternalLink class="w-3.5 h-3.5 text-blue-400" />
+          Lihat Website Live
         </RouterLink>
       </header>
-      <main class="flex-1 p-6 overflow-y-auto">
+
+      <main class="flex-1 p-8 overflow-y-auto max-w-6xl">
         <RouterView />
       </main>
     </div>
@@ -59,13 +72,23 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/lib/supabase'
 import { LayoutDashboard, Settings, FolderKanban, Cpu, UserSquare2, LogOut, ExternalLink } from 'lucide-vue-next'
+import useSiteSettings from '@/composables/useSiteSettings'
 
 const router = useRouter()
 const route = useRoute()
+const { settings } = useSiteSettings()
+const userEmail = ref('admin@portofolio.dev')
+
+onMounted(async () => {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user?.email) userEmail.value = user.email
+})
+
+const userInitial = computed(() => userEmail.value ? userEmail.value.charAt(0).toUpperCase() : 'A')
 
 const navItems = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -76,15 +99,14 @@ const navItems = [
 ]
 
 const routeNames = {
-  'AdminDashboard': 'Dashboard',
-  'AdminSettings': 'Pengaturan Umum',
-  'AdminProjects': 'Manajemen Proyek',
-  'AdminSkills': 'Manajemen Keahlian',
-  'AdminAboutCards': 'Manajemen Kartu About',
+  'AdminDashboard': 'Ringkasan Dashboard',
+  'AdminSettings': 'Pengaturan Umum & Biodata',
+  'AdminProjects': 'Manajemen Proyek Portofolio',
+  'AdminSkills': 'Manajemen Keahlian & Tools',
+  'AdminAboutCards': 'Manajemen Kartu Keahlian Fokus',
 }
 
 const currentRouteName = computed(() => routeNames[route.name] || 'Admin Panel')
-const userEmail = computed(() => supabase.auth.getUser()?.then?.(r => r?.data?.user?.email) || 'admin@portofolio.dev')
 
 const logout = async () => {
   await supabase.auth.signOut()
