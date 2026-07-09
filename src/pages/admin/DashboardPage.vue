@@ -41,12 +41,12 @@
         <Lightbulb class="w-4 h-4" />
       </div>
       <div>
-        <p class="font-semibold text-slate-200 mb-1">Panduan Pengelolaan Konten:</p>
+        <p class="font-semibold text-slate-200 mb-1">Panduan Pengelolaan Konten (Menu Terpisah Tiap Halaman):</p>
         <ul class="text-xs text-slate-400 space-y-1.5 mt-2 list-disc list-inside leading-relaxed">
-          <li>Menu <strong class="text-slate-300">Pengaturan Umum</strong> untuk mengubah bio, foto hero/about, kontak email, dan link sosial media.</li>
-          <li>Menu <strong class="text-slate-300">Proyek</strong> untuk menambah, mengedit, atau menghapus proyek portofolio beserta fiturnya.</li>
-          <li>Menu <strong class="text-slate-300">Keahlian</strong> untuk menambah logo tool dan bahasa pemrograman yang Anda kuasai.</li>
-          <li>Menu <strong class="text-slate-300">Kartu About</strong> untuk memodifikasi 4 kartu keahlian utama di section About Me.</li>
+          <li>Menu <strong class="text-slate-300">Brand & Sosial</strong> untuk mengatur judul SEO, logo, favicon, serta daftar tautan media sosial.</li>
+          <li>Menu <strong class="text-slate-300">Hero Section</strong> & <strong class="text-slate-300">About Section</strong> terpisah khusus untuk mengedit foto, biografi, salam pembuka, dan deskripsi masing-masing bagian.</li>
+          <li>Menu <strong class="text-slate-300">Keahlian</strong> & <strong class="text-slate-300">Proyek</strong> untuk menambah, mengedit, atau menghapus tool/bahasa pemrograman serta proyek portofolio.</li>
+          <li>Menu <strong class="text-slate-300">Kontak & Pesan</strong> & <strong class="text-slate-300">Footer Website</strong> untuk mengatur email penerima pesan, lokasi, waktu respon, serta teks copyright.</li>
         </ul>
       </div>
     </div>
@@ -55,21 +55,23 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Settings, FolderKanban, Cpu, UserSquare2, Zap, Lightbulb } from 'lucide-vue-next'
+import { Sparkles, Home, User, FolderKanban, Cpu, UserSquare2, Phone, Zap, Lightbulb } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
 
 const stats = ref([
   { label: 'Proyek Portofolio', icon: FolderKanban, iconBg: 'bg-blue-500/10', iconColor: 'text-blue-400', value: null },
   { label: 'Keahlian (Skills)', icon: Cpu, iconBg: 'bg-purple-500/10', iconColor: 'text-purple-400', value: null },
   { label: 'Kartu Fokus', icon: UserSquare2, iconBg: 'bg-pink-500/10', iconColor: 'text-pink-400', value: null },
-  { label: 'Status Sistem', icon: Settings, iconBg: 'bg-emerald-500/10', iconColor: 'text-emerald-400', value: 'Aktif' },
+  { label: 'Status Sistem', icon: Sparkles, iconBg: 'bg-emerald-500/10', iconColor: 'text-emerald-400', value: 'Aktif' },
 ])
 
 const quickLinks = [
-  { to: '/admin/settings', label: 'Edit Pengaturan', icon: Settings },
-  { to: '/admin/projects', label: 'Kelola Proyek', icon: FolderKanban },
+  { to: '/admin/settings', label: 'Brand & Sosial', icon: Sparkles },
+  { to: '/admin/hero', label: 'Hero Section', icon: Home },
+  { to: '/admin/about', label: 'About Section', icon: User },
   { to: '/admin/skills', label: 'Kelola Skill', icon: Cpu },
-  { to: '/admin/about-cards', label: 'Kelola Kartu', icon: UserSquare2 },
+  { to: '/admin/projects', label: 'Kelola Proyek', icon: FolderKanban },
+  { to: '/admin/contact', label: 'Kontak & Pesan', icon: Phone },
 ]
 
 onMounted(async () => {

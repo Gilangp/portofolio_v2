@@ -75,7 +75,7 @@
 import { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { supabase } from '@/lib/supabase'
-import { LayoutDashboard, Settings, FolderKanban, Cpu, UserSquare2, LogOut, ExternalLink } from 'lucide-vue-next'
+import { LayoutDashboard, Sparkles, Home, User, UserSquare2, FolderKanban, Cpu, Phone, LayoutTemplate as LayoutBottom, LogOut, ExternalLink } from 'lucide-vue-next'
 import useSiteSettings from '@/composables/useSiteSettings'
 
 const router = useRouter()
@@ -92,18 +92,26 @@ const userInitial = computed(() => userEmail.value ? userEmail.value.charAt(0).t
 
 const navItems = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/admin/settings', label: 'Pengaturan Umum', icon: Settings },
-  { to: '/admin/projects', label: 'Proyek', icon: FolderKanban },
-  { to: '/admin/skills', label: 'Keahlian (Skills)', icon: Cpu },
+  { to: '/admin/settings', label: 'Brand & Sosial', icon: Sparkles },
+  { to: '/admin/hero', label: 'Hero Section', icon: Home },
+  { to: '/admin/about', label: 'About Section', icon: User },
   { to: '/admin/about-cards', label: 'Kartu About', icon: UserSquare2 },
+  { to: '/admin/skills', label: 'Keahlian (Skills)', icon: Cpu },
+  { to: '/admin/projects', label: 'Proyek', icon: FolderKanban },
+  { to: '/admin/contact', label: 'Kontak & Pesan', icon: Phone },
+  { to: '/admin/footer', label: 'Footer Website', icon: LayoutBottom },
 ]
 
 const routeNames = {
   'AdminDashboard': 'Ringkasan Dashboard',
-  'AdminSettings': 'Pengaturan Umum & Biodata',
+  'AdminSettings': 'Brand, Logo & Media Sosial',
+  'AdminHero': 'Pengaturan Section Hero (Beranda)',
+  'AdminAbout': 'Pengaturan Section Tentang Saya (About)',
+  'AdminAboutCards': 'Manajemen Kartu Keahlian Fokus',
   'AdminProjects': 'Manajemen Proyek Portofolio',
   'AdminSkills': 'Manajemen Keahlian & Tools',
-  'AdminAboutCards': 'Manajemen Kartu Keahlian Fokus',
+  'AdminContact': 'Pengaturan Section Kontak & Pesan',
+  'AdminFooter': 'Pengaturan Section Footer Website',
 }
 
 const currentRouteName = computed(() => routeNames[route.name] || 'Admin Panel')

@@ -17,9 +17,13 @@ const routes = [
       { path: '', redirect: '/admin/dashboard' },
       { path: 'dashboard', name: 'AdminDashboard', component: () => import('@/pages/admin/DashboardPage.vue') },
       { path: 'settings', name: 'AdminSettings', component: () => import('@/pages/admin/SettingsPage.vue') },
-      { path: 'projects', name: 'AdminProjects', component: () => import('@/pages/admin/ProjectsPage.vue') },
-      { path: 'skills', name: 'AdminSkills', component: () => import('@/pages/admin/SkillsPage.vue') },
+      { path: 'hero', name: 'AdminHero', component: () => import('@/pages/admin/HeroPage.vue') },
+      { path: 'about', name: 'AdminAbout', component: () => import('@/pages/admin/AboutPage.vue') },
       { path: 'about-cards', name: 'AdminAboutCards', component: () => import('@/pages/admin/AboutCardsPage.vue') },
+      { path: 'skills', name: 'AdminSkills', component: () => import('@/pages/admin/SkillsPage.vue') },
+      { path: 'projects', name: 'AdminProjects', component: () => import('@/pages/admin/ProjectsPage.vue') },
+      { path: 'contact', name: 'AdminContact', component: () => import('@/pages/admin/ContactPage.vue') },
+      { path: 'footer', name: 'AdminFooter', component: () => import('@/pages/admin/FooterPage.vue') },
     ]
   },
   {

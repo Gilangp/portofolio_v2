@@ -2,8 +2,8 @@
   <div class="space-y-6 max-w-4xl">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-xl font-bold text-slate-100">Pengaturan Umum & Biodata</h2>
-        <p class="text-sm text-slate-400 mt-1">Kontrol seluruh teks dasar, brand, logo, foto profil, dan media sosial</p>
+        <h2 class="text-xl font-bold text-slate-100">Brand, Logo & Media Sosial</h2>
+        <p class="text-sm text-slate-400 mt-1">Kontrol identitas website, judul SEO, logo, favicon, dan seluruh tautan media sosial</p>
       </div>
       <button @click="save" :disabled="isSaving" class="btn-admin">
         <Loader2 v-if="isSaving" class="w-4 h-4 animate-spin" />
@@ -23,7 +23,7 @@
     </Transition>
 
     <div v-if="isLoading" class="space-y-4">
-      <div v-for="i in 6" :key="i" class="skeleton h-20 rounded-2xl" />
+      <div v-for="i in 4" :key="i" class="skeleton h-24 rounded-2xl" />
     </div>
 
     <template v-else>
@@ -70,170 +70,6 @@
         </div>
       </div>
 
-      <!-- Photo Section -->
-      <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-sm">
-        <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-3">
-          <ImageIcon class="w-4 h-4 text-blue-400" /> Foto Profil & Halaman
-        </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-1">
-          <div>
-            <ImageUploadInput
-              v-model="form.profile_photo_url"
-              label="Foto Hero (Halaman Home)"
-              folder="profiles"
-              placeholder="https://... atau klik Upload File"
-            />
-            <div class="mt-3 flex items-center gap-3">
-              <img v-if="form.profile_photo_url" :src="form.profile_photo_url" class="w-12 h-12 rounded-full object-cover border border-slate-700 shadow" />
-              <span class="text-xs text-slate-500">Tampil di lingkaran hero beranda</span>
-            </div>
-          </div>
-          <div>
-            <ImageUploadInput
-              v-model="form.about_photo_url"
-              label="Foto About (Halaman About)"
-              folder="profiles"
-              placeholder="https://... atau klik Upload File"
-            />
-            <div class="mt-3 flex items-center gap-3">
-              <img v-if="form.about_photo_url" :src="form.about_photo_url" class="w-12 h-12 rounded-xl object-cover border border-slate-700 shadow" />
-              <span class="text-xs text-slate-500">Tampil di section tentang saya</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hero Section -->
-      <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-sm">
-        <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-3">
-          <Home class="w-4 h-4 text-blue-400" /> Section Beranda (Hero)
-        </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Nama Lengkap</label>
-            <input v-model="form.name" type="text" class="input-admin" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Link Download CV (PDF URL)</label>
-            <input v-model="form.cv_url" type="url" class="input-admin" placeholder="https://..." />
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Salam Pembuka (English)</label>
-            <input v-model="form.hero_greeting_en" type="text" class="input-admin" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Salam Pembuka (Indonesia)</label>
-            <input v-model="form.hero_greeting_id" type="text" class="input-admin" />
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Daftar Teks Efek Mengetik (pisahkan dengan koma)</label>
-          <input :value="rolesText" @input="rolesText = $event.target.value" type="text" class="input-admin" placeholder="Fullstack Developer, Network Engineer" />
-          <p class="text-xs text-slate-500 mt-1.5">Contoh: <code class="text-blue-400">Fullstack Developer, Network Engineer, QA Automation</code></p>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Deskripsi Singkat Hero (English)</label>
-            <textarea v-model="form.hero_desc_en" rows="3" class="input-admin resize-none" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Deskripsi Singkat Hero (Indonesia)</label>
-            <textarea v-model="form.hero_desc_id" rows="3" class="input-admin resize-none" />
-          </div>
-        </div>
-      </div>
-
-      <!-- About Section -->
-      <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-sm">
-        <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-3">
-          <UserSquare2 class="w-4 h-4 text-blue-400" /> Section Tentang Saya (About)
-        </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Judul About (English)</label>
-            <input v-model="form.about_title_en" type="text" class="input-admin" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Judul About (Indonesia)</label>
-            <input v-model="form.about_title_id" type="text" class="input-admin" />
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Biografi Utama (English)</label>
-            <textarea v-model="form.about_bio_en" rows="4" class="input-admin resize-none" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Biografi Utama (Indonesia)</label>
-            <textarea v-model="form.about_bio_id" rows="4" class="input-admin resize-none" />
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Keahlian & Spesialisasi (English)</label>
-            <textarea v-model="form.about_specialty_en" rows="3" class="input-admin resize-none" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Keahlian & Spesialisasi (Indonesia)</label>
-            <textarea v-model="form.about_specialty_id" rows="3" class="input-admin resize-none" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Contact Info -->
-      <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-sm">
-        <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-3">
-          <Phone class="w-4 h-4 text-blue-400" /> Informasi Kontak
-        </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Email Kontak (Untuk form pesan)</label>
-            <input v-model="form.contact_email" type="email" class="input-admin" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Lokasi</label>
-            <input v-model="form.contact_location" type="text" class="input-admin" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Waktu Respon (English)</label>
-            <input v-model="form.contact_response_en" type="text" class="input-admin" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Waktu Respon (Indonesia)</label>
-            <input v-model="form.contact_response_id" type="text" class="input-admin" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Custom Content -->
-      <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-sm">
-        <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-3">
-          <LayoutBottom class="w-4 h-4 text-blue-400" /> Tampilan & Konten Footer Website
-        </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Tagline / Deskripsi Footer (English)</label>
-            <textarea v-model="form.footer_tagline_en" rows="2" class="input-admin resize-none" placeholder="Thank you for visiting my portfolio. Let's create something amazing together!" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Tagline / Deskripsi Footer (Indonesia)</label>
-            <textarea v-model="form.footer_tagline_id" rows="2" class="input-admin resize-none" placeholder="Terima kasih telah mengunjungi portofolio saya. Mari berkarya bersama!" />
-          </div>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Teks Hak Cipta / Copyright (English)</label>
-            <input v-model="form.footer_copyright_en" type="text" class="input-admin" placeholder="All rights reserved. Designed & built with passion." />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Teks Hak Cipta / Copyright (Indonesia)</label>
-            <input v-model="form.footer_copyright_id" type="text" class="input-admin" placeholder="Hak cipta dilindungi undang-undang. Didesain dengan dedikasi." />
-          </div>
-        </div>
-      </div>
-
       <!-- Dynamic Social Media -->
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-sm">
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -261,9 +97,9 @@
               <DynamicIcon :name="link.icon || link.name || 'globe'" class-name="w-5 h-5" />
             </div>
 
-            <div class="w-44 flex-shrink-0">
-              <label class="block text-[10px] text-slate-500 font-semibold mb-1 uppercase">Platform / Ikon</label>
-              <select v-model="link.name" @change="link.icon = link.name" class="input-admin !py-1.5 !text-xs">
+            <div class="w-48 flex-shrink-0">
+              <label class="block text-[10px] text-slate-400 font-semibold mb-1 uppercase tracking-wider">Platform / Ikon</label>
+              <select v-model="link.name" @change="link.icon = link.name" class="input-admin !py-2 !text-xs font-medium cursor-pointer">
                 <option value="GitHub">GitHub</option>
                 <option value="LinkedIn">LinkedIn</option>
                 <option value="Instagram">Instagram</option>
@@ -285,8 +121,8 @@
             </div>
 
             <div class="flex-1 min-w-0">
-              <label class="block text-[10px] text-slate-500 font-semibold mb-1 uppercase">URL Profil</label>
-              <input v-model="link.url" type="url" class="input-admin !py-1.5 !text-xs" placeholder="https://..." />
+              <label class="block text-[10px] text-slate-400 font-semibold mb-1 uppercase tracking-wider">URL Profil</label>
+              <input v-model="link.url" type="url" class="input-admin !py-2 !text-xs" placeholder="https://..." />
             </div>
 
             <div class="pt-4 flex-shrink-0">
@@ -302,8 +138,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { Save, Loader2, ImageIcon, Home, UserSquare2, Phone, Globe, Sparkles, Plus, Trash2, CheckCircle, AlertCircle, LayoutTemplate as LayoutBottom } from 'lucide-vue-next'
+import { ref, onMounted } from 'vue'
+import { Save, Loader2, Globe, Sparkles, Plus, Trash2, CheckCircle, AlertCircle } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
 import ImageUploadInput from '@/components/admin/ImageUploadInput.vue'
 import DynamicIcon from '@/components/common/DynamicIcon.vue'
@@ -312,11 +148,6 @@ const form = ref({})
 const isLoading = ref(true)
 const isSaving = ref(false)
 const toast = ref({ show: false, type: 'success', message: '' })
-
-const rolesText = computed({
-  get: () => (form.value.hero_roles ?? []).join(', '),
-  set: (val) => { form.value.hero_roles = val.split(',').map(s => s.trim()).filter(Boolean) }
-})
 
 const showToast = (type, message) => {
   toast.value = { show: true, type, message }
@@ -361,20 +192,49 @@ const save = async () => {
     if (tk) form.value.social_tiktok = tk.url
   }
 
-  // 1. First try saving directly
-  let { error } = await supabase.from('site_settings').upsert({ ...form.value, id: 1 })
+  const payload = {
+    site_title: form.value.site_title,
+    site_logo_text: form.value.site_logo_text,
+    site_logo_url: form.value.site_logo_url,
+    site_favicon_url: form.value.site_favicon_url,
+    social_github: form.value.social_github,
+    social_linkedin: form.value.social_linkedin,
+    social_instagram: form.value.social_instagram,
+    social_tiktok: form.value.social_tiktok,
+  }
 
-  // 2. If Supabase throws schema cache error (e.g. social_links / normalized_social_links column doesn't exist in DB table), strip UI-only columns and retry safely
-  if (error && (error.message.includes('schema cache') || error.message.includes('social_links') || error.message.includes('normalized_social_links'))) {
-    const cleanPayload = { ...form.value, id: 1 }
-    delete cleanPayload.social_links
-    delete cleanPayload.normalized_social_links
-    const retry = await supabase.from('site_settings').upsert(cleanPayload)
-    error = retry.error
+  let { error } = await supabase.from('site_settings').update(payload).eq('id', 1)
+
+  let attempts = 0
+  while (error && attempts < 10) {
+    if (error.message && (error.message.includes('Could not find') || error.message.includes('schema cache'))) {
+      const match = error.message.match(/'([^']+)' column/)
+      if (match && match[1] && payload[match[1]] !== undefined) {
+        delete payload[match[1]]
+        delete form.value[match[1]]
+        attempts++
+        const retry = await supabase.from('site_settings').update(payload).eq('id', 1)
+        error = retry.error
+        continue
+      }
+    }
+    const upsertPayload = { ...payload, id: 1 }
+    const retryUpsert = await supabase.from('site_settings').upsert(upsertPayload)
+    error = retryUpsert.error
+    if (error && error.message && (error.message.includes('Could not find') || error.message.includes('schema cache'))) {
+      const match = error.message.match(/'([^']+)' column/)
+      if (match && match[1]) {
+        delete payload[match[1]]
+        delete form.value[match[1]]
+        attempts++
+        continue
+      }
+    }
+    break
   }
 
   if (error) showToast('error', 'Gagal menyimpan: ' + error.message)
-  else showToast('success', 'Perubahan berhasil disimpan!')
+  else showToast('success', 'Pengaturan Brand & Media Sosial berhasil disimpan!')
   isSaving.value = false
 }
 </script>
