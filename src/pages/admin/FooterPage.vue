@@ -27,6 +27,30 @@
     </div>
 
     <template v-else>
+      <!-- Supabase Schema Warning & Helper Banner -->
+      <div v-if="showSchemaWarning" class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-5 space-y-3 transition-all">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+            <AlertTriangle class="w-5 h-5 flex-shrink-0" />
+            <span>Info Penting: Mengatasi Error 400 (Bad Request) pada Supabase</span>
+          </div>
+          <button @click="showSchemaWarning = false" class="text-slate-400 hover:text-white text-xs font-medium">Tutup ✕</button>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Jika kolom baru seperti <code class="text-amber-300">footer_tagline_id</code> mengalami error <strong>400 Bad Request</strong> saat disimpan, itu karena tabel <code class="text-amber-300">site_settings</code> di Supabase belum ditambahkan kolom tersebut. Perubahan Anda <strong>tetap aktif langsung di browser & website</strong> saat ini. Untuk menyimpannya permanen ke database Supabase, salin SQL di bawah dan jalankan di menu <strong>SQL Editor</strong> Supabase Anda:
+        </p>
+        <div class="relative bg-slate-950 rounded-xl p-3 border border-slate-800 text-[11px] font-mono text-slate-300 max-h-40 overflow-y-auto">
+          <button @click="copySql" type="button" class="absolute top-2 right-2 px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg transition-colors flex items-center gap-1 text-xs shadow">
+            <Copy class="w-3.5 h-3.5" /> {{ sqlCopied ? 'Tersalin!' : 'Salin SQL Fix' }}
+          </button>
+          <pre class="whitespace-pre-wrap pr-28">ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS footer_tagline_en text;
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS footer_tagline_id text;
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS footer_copyright_en text;
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS footer_copyright_id text;
+NOTIFY pgrst, 'reload schema';</pre>
+        </div>
+      </div>
+
       <!-- Tagline / Deskripsi Footer -->
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-sm">
         <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2 border-b border-slate-800 pb-3">
@@ -66,29 +90,48 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { Save, Loader2, LayoutTemplate as LayoutBottom, Copyright, CheckCircle, AlertCircle } from 'lucide-vue-next'
+import { Save, Loader2, LayoutTemplate as LayoutBottom, Copyright, CheckCircle, AlertCircle, AlertTriangle, Copy } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
+import useSiteSettings from '@/composables/useSiteSettings'
+
+const { updateSiteSettingsLocal } = useSiteSettings()
 
 const form = ref({})
 const isLoading = ref(true)
 const isSaving = ref(false)
 const toast = ref({ show: false, type: 'success', message: '' })
+const showSchemaWarning = ref(false)
+const sqlCopied = ref(false)
 
 const showToast = (type, message) => {
   toast.value = { show: true, type, message }
-  setTimeout(() => (toast.value.show = false), 3500)
+  setTimeout(() => (toast.value.show = false), 4500)
+}
+
+const copySql = () => {
+  const sql = `ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS footer_tagline_en text;
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS footer_tagline_id text;
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS footer_copyright_en text;
+ALTER TABLE site_settings ADD COLUMN IF NOT EXISTS footer_copyright_id text;
+NOTIFY pgrst, 'reload schema';`
+  navigator.clipboard.writeText(sql)
+  sqlCopied.value = true
+  setTimeout(() => (sqlCopied.value = false), 2500)
 }
 
 onMounted(async () => {
   const { data } = await supabase.from('site_settings').select('*').eq('id', 1).single()
-  if (data) {
-    form.value = data
-  }
+  let localBackup = {}
+  try {
+    localBackup = JSON.parse(localStorage.getItem('site_settings_backup') || '{}')
+  } catch (e) {}
+  form.value = { ...localBackup, ...(data || {}) }
   isLoading.value = false
 })
 
 const save = async () => {
   isSaving.value = true
+  updateSiteSettingsLocal(form.value)
   
   const updatePayload = {
     footer_tagline_en: form.value.footer_tagline_en,
@@ -101,13 +144,14 @@ const save = async () => {
   let { error } = await supabase.from('site_settings').update(payload).eq('id', 1)
 
   let attempts = 0
+  let strippedColumns = 0
   while (error && attempts < 10) {
     if (error.message && (error.message.includes('Could not find') || error.message.includes('schema cache'))) {
       const match = error.message.match(/'([^']+)' column/)
       if (match && match[1] && payload[match[1]] !== undefined) {
         delete payload[match[1]]
-        delete form.value[match[1]]
         attempts++
+        strippedColumns++
         const retry = await supabase.from('site_settings').update(payload).eq('id', 1)
         error = retry.error
         continue
@@ -120,16 +164,22 @@ const save = async () => {
       const match = error.message.match(/'([^']+)' column/)
       if (match && match[1]) {
         delete payload[match[1]]
-        delete form.value[match[1]]
         attempts++
+        strippedColumns++
         continue
       }
     }
     break
   }
 
-  if (error) showToast('error', 'Gagal menyimpan: ' + error.message)
-  else showToast('success', 'Perubahan Footer berhasil disimpan!')
+  if (error && strippedColumns === 0) {
+    showToast('error', 'Gagal menyimpan ke Supabase: ' + error.message)
+  } else if (strippedColumns > 0) {
+    showToast('success', 'Perubahan aktif & tersimpan di browser! (Catatan: Ada kolom belum di database Supabase, klik Info Penting di bawah untuk menyalin SQL fix)')
+    showSchemaWarning.value = true
+  } else {
+    showToast('success', 'Perubahan Footer berhasil disimpan ke database Supabase!')
+  }
   isSaving.value = false
 }
 </script>

@@ -60,23 +60,61 @@ export default function useSiteSettings() {
       .single()
       .then(({ data, error }) => {
         clearTimeout(timer)
+        let localBackup = {}
+        try {
+          localBackup = JSON.parse(localStorage.getItem('site_settings_backup') || '{}')
+        } catch (e) {}
+
         if (!error && data) {
-          // Normalize right BEFORE assigning to ref so we never mutate during reactive watches
-          data.normalized_social_links = normalizeSocialLinks(data)
-          settings.value = data
-          updateMeta(data)
+          const merged = { ...localBackup, ...data }
+          merged.normalized_social_links = normalizeSocialLinks(merged)
+          settings.value = merged
+          updateMeta(merged)
+        } else if (Object.keys(localBackup).length > 0) {
+          localBackup.normalized_social_links = normalizeSocialLinks(localBackup)
+          settings.value = localBackup
+          updateMeta(localBackup)
         }
         isLoading.value = false
         fetchPromise = null
-        return data
+        return settings.value || data
       })
       .catch(() => {
         clearTimeout(timer)
+        let localBackup = {}
+        try {
+          localBackup = JSON.parse(localStorage.getItem('site_settings_backup') || '{}')
+        } catch (e) {}
+        if (Object.keys(localBackup).length > 0) {
+          localBackup.normalized_social_links = normalizeSocialLinks(localBackup)
+          settings.value = localBackup
+          updateMeta(localBackup)
+        }
         isLoading.value = false
         fetchPromise = null
       })
 
     return fetchPromise
+  }
+
+  const updateSiteSettingsLocal = (newData) => {
+    if (!newData) return
+    let localBackup = {}
+    try {
+      localBackup = JSON.parse(localStorage.getItem('site_settings_backup') || '{}')
+    } catch (e) {}
+    const merged = { ...localBackup, ...newData }
+    try {
+      localStorage.setItem('site_settings_backup', JSON.stringify(merged))
+    } catch (e) {}
+    if (settings.value) {
+      settings.value = { ...settings.value, ...merged }
+      settings.value.normalized_social_links = normalizeSocialLinks(settings.value)
+    } else {
+      merged.normalized_social_links = normalizeSocialLinks(merged)
+      settings.value = merged
+    }
+    updateMeta(settings.value)
   }
 
   onMounted(() => {
@@ -94,5 +132,6 @@ export default function useSiteSettings() {
     }
   }, { deep: true })
 
-  return { settings, isLoading, fetchSettings, normalizeSocialLinks }
+  return { settings, isLoading, fetchSettings, normalizeSocialLinks, updateSiteSettingsLocal, updateMeta }
 }
+

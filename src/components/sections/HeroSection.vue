@@ -139,8 +139,15 @@ let charIndex = 0
 let isDeleting = false
 
 const roles = computed(() => {
+  if (currentLang.value === 'en') {
+    const rEn = settings.value?.hero_roles_en
+    if (rEn && Array.isArray(rEn) && rEn.length) return rEn
+  } else {
+    const rId = settings.value?.hero_roles_id
+    if (rId && Array.isArray(rId) && rId.length) return rId
+  }
   const r = settings.value?.hero_roles
-  if (!r || !r.length) {
+  if (!r || !Array.isArray(r) || !r.length) {
     return currentLang.value === 'en'
       ? ['Fullstack Developer', 'Network Engineer']
       : ['Pengembang Fullstack', 'Teknisi Jaringan']
