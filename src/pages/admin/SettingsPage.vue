@@ -129,23 +129,67 @@ NOTIFY pgrst, 'reload schema';</pre>
             <div class="w-48 flex-shrink-0">
               <label class="block text-[10px] text-slate-400 font-semibold mb-1 uppercase tracking-wider">Platform / Ikon</label>
               <select v-model="link.name" @change="link.icon = link.name" class="input-admin !py-2 !text-xs font-medium cursor-pointer">
-                <option value="GitHub">GitHub</option>
-                <option value="LinkedIn">LinkedIn</option>
-                <option value="Instagram">Instagram</option>
-                <option value="TikTok">TikTok</option>
-                <option value="Twitter">Twitter / X</option>
-                <option value="YouTube">YouTube</option>
-                <option value="Discord">Discord</option>
-                <option value="Telegram">Telegram</option>
-                <option value="WhatsApp">WhatsApp</option>
-                <option value="Facebook">Facebook</option>
-                <option value="Dribbble">Dribbble</option>
-                <option value="Figma">Figma</option>
-                <option value="GitLab">GitLab</option>
-                <option value="Medium">Medium</option>
-                <option value="Behance">Behance</option>
-                <option value="Email">Email / Mail</option>
-                <option value="Website">Website Lainnya</option>
+                <optgroup label="Media Sosial Utama">
+                  <option value="Instagram">Instagram</option>
+                  <option value="TikTok">TikTok</option>
+                  <option value="Twitter">Twitter / X</option>
+                  <option value="YouTube">YouTube</option>
+                  <option value="Facebook">Facebook</option>
+                  <option value="Threads">Threads</option>
+                  <option value="Snapchat">Snapchat</option>
+                  <option value="Pinterest">Pinterest</option>
+                  <option value="Reddit">Reddit</option>
+                  <option value="Twitch">Twitch</option>
+                  <option value="Bluesky">Bluesky</option>
+                  <option value="Mastodon">Mastodon</option>
+                  <option value="Tumblr">Tumblr</option>
+                </optgroup>
+                <optgroup label="Developer & Coding">
+                  <option value="GitHub">GitHub</option>
+                  <option value="GitLab">GitLab</option>
+                  <option value="LinkedIn">LinkedIn</option>
+                  <option value="Stack Overflow">Stack Overflow</option>
+                  <option value="Dev.to">Dev.to</option>
+                  <option value="Hashnode">Hashnode</option>
+                  <option value="LeetCode">LeetCode</option>
+                  <option value="HackerRank">HackerRank</option>
+                  <option value="Kaggle">Kaggle</option>
+                  <option value="CodePen">CodePen</option>
+                  <option value="CodeSandbox">CodeSandbox</option>
+                  <option value="Vercel">Vercel</option>
+                  <option value="Steam">Steam</option>
+                </optgroup>
+                <optgroup label="Desain & Kreatif">
+                  <option value="Dribbble">Dribbble</option>
+                  <option value="Figma">Figma</option>
+                  <option value="Behance">Behance</option>
+                  <option value="Unsplash">Unsplash</option>
+                </optgroup>
+                <optgroup label="Artikel, Blog & Audio">
+                  <option value="Medium">Medium</option>
+                  <option value="Substack">Substack</option>
+                  <option value="Spotify">Spotify</option>
+                  <option value="SoundCloud">SoundCloud</option>
+                  <option value="Quora">Quora</option>
+                  <option value="Notion">Notion</option>
+                </optgroup>
+                <optgroup label="Komunikasi & Komunitas">
+                  <option value="Discord">Discord</option>
+                  <option value="Telegram">Telegram</option>
+                  <option value="WhatsApp">WhatsApp</option>
+                  <option value="Slack">Slack</option>
+                  <option value="Skype">Skype</option>
+                </optgroup>
+                <optgroup label="Donasi & Pendukung">
+                  <option value="Patreon">Patreon</option>
+                  <option value="Ko-fi">Ko-fi</option>
+                  <option value="Buy Me a Coffee">Buy Me a Coffee</option>
+                </optgroup>
+                <optgroup label="Kontak & Lainnya">
+                  <option value="Email">Email / Mail</option>
+                  <option value="Phone">Phone / WhatsApp</option>
+                  <option value="Website">Website Lainnya</option>
+                </optgroup>
               </select>
             </div>
 

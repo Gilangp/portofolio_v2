@@ -4,7 +4,17 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gilang Purnomo — Portofolio</title>
+    <title>Portofolio Gilang Purnomo | Fullstack Developer & Network Engineer</title>
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="google013e7daacad1eba9" />
+    <!-- SEO Meta Tags Aligned with isi-portofolio.md -->
+    <meta name="description" content="Mahasiswa Teknologi Informasi di Politeknik Negeri Malang yang berdedikasi tinggi dalam mengembangkan aplikasi web modern berkinerja tinggi serta merancang infrastruktur jaringan yang andal. Menggabungkan logika pemecahan masalah dengan integrasi AI untuk menciptakan solusi digital yang berdampak." />
+    <meta name="keywords" content="Gilang Purnomo, Fullstack Developer, Network Engineer, Vue 3, Laravel, Next.js, Tailwind CSS, Supabase, AI Integration, Cisco, MikroTik, Playwright, k6, Politeknik Negeri Malang, Web Developer Indonesia" />
+    <meta name="author" content="Gilang Purnomo" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Portofolio Gilang Purnomo | Fullstack Developer & Network Engineer" />
+    <meta property="og:description" content="Mahasiswa Teknologi Informasi di Politeknik Negeri Malang spesialisasi Fullstack Web Development, Artificial Intelligence (AI), dan Network Engineering." />
+    <meta property="og:type" content="website" />
     <style>
       /* Pre-mount loader animations and zero-flash styles */
       html, body {
@@ -19,23 +29,38 @@
         to { transform: rotate(360deg); }
       }
       @keyframes pre-pulse {
-        0%, 100% { opacity: 0.5; transform: scale(0.98); }
+        0%, 100% { opacity: 0.4; transform: scale(0.98); }
         50% { opacity: 1; transform: scale(1.02); }
+      }
+      @keyframes pre-shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
       }
     </style>
   </head>
   <body class="bg-[#090d16] text-slate-100 antialiased selection:bg-blue-500 selection:text-white">
     <div id="app">
       <!-- Instant Pre-mount Loading Screen (Zero White Flash) -->
-      <div style="min-height: 100vh; width: 100vw; display: flex; flex-direction: column; items-center; align-items: center; justify-content: center; background-color: #090d16;">
-        <div style="position: relative; width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
-          <!-- Glowing spinner ring -->
-          <div style="position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(59, 130, 246, 0.15); border-top-color: #3b82f6; border-right-color: #6366f1; animation: pre-spin 0.9s cubic-bezier(0.4, 0, 0.2, 1) infinite; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);"></div>
-          <!-- Center brand text -->
-          <span style="font-size: 22px; font-weight: 900; background: linear-gradient(135deg, #60a5fa, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pre-pulse 1.8s ease-in-out infinite;">GP</span>
+      <div style="min-height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #090d16; padding: 24px; text-align: center;">
+        <div style="position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+          <!-- Outer glowing ring -->
+          <div style="position: absolute; inset: -4px; border-radius: 50%; background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(168, 85, 247, 0.2)); filter: blur(8px); animation: pre-pulse 2s infinite ease-in-out;"></div>
+          <!-- Spinner ring -->
+          <div style="position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(59, 130, 246, 0.12); border-top-color: #3b82f6; border-right-color: #8b5cf6; animation: pre-spin 0.85s cubic-bezier(0.4, 0, 0.2, 1) infinite; box-shadow: 0 0 24px rgba(59, 130, 246, 0.35);"></div>
+          <!-- Center brand monogram -->
+          <span style="font-size: 24px; font-weight: 900; letter-spacing: -0.05em; background: linear-gradient(135deg, #60a5fa, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pre-pulse 1.7s ease-in-out infinite;">GP</span>
         </div>
-        <div style="font-size: 13px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #94a3b8; animation: pre-pulse 1.8s ease-in-out infinite;">
-          Memuat Portofolio...
+        <!-- Brand Title & Role -->
+        <div style="font-size: 14px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: #f8fafc; margin-bottom: 6px;">
+          Gilang Purnomo
+        </div>
+        <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #64748b; margin-bottom: 20px;">
+          Fullstack Developer &bull; Network Engineer
+        </div>
+        <!-- Status indicator -->
+        <div style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 9999px; background-color: rgba(30, 41, 59, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); font-size: 11px; font-weight: 600; color: #94a3b8;">
+          <span style="width: 6px; height: 6px; border-radius: 50%; background-color: #3b82f6; box-shadow: 0 0 8px #3b82f6; animation: pre-pulse 1s infinite;"></span>
+          Memuat Sistem Portofolio...
         </div>
       </div>
     </div>
