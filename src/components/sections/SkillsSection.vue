@@ -198,11 +198,11 @@ const toolSkills = computed(() => allSkills.value.filter(s => {
 }))
 
 onMounted(async () => {
-  const { data, error } = await supabase.from('skills').select('*').order('sort_order', { ascending: true })
+  const { data, error } = await supabase.from('skills').select('*').or('is_visible.is.null,is_visible.eq.true').order('sort_order', { ascending: true })
   if (error) {
     console.error('Gagal mengambil data skills dari Supabase:', error.message)
   }
-  allSkills.value = data ?? []
+  allSkills.value = (data ?? []).filter(s => s.is_visible !== false)
   isLoading.value = false
 })
 </script>

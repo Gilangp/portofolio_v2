@@ -211,8 +211,8 @@ const previewImage = ref(null)
 const isImageHovered = ref(false)
 
 onMounted(async () => {
-  const { data } = await supabase.from('projects').select('*').order('sort_order')
-  projects.value = data ?? []
+  const { data } = await supabase.from('projects').select('*').or('is_visible.is.null,is_visible.eq.true').order('sort_order')
+  projects.value = (data ?? []).filter(p => p.is_visible !== false)
   isLoading.value = false
 })
 

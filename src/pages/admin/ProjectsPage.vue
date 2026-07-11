@@ -20,16 +20,30 @@
     </div>
     <div v-else class="space-y-3">
       <div v-for="p in projects" :key="p.id"
-        class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 flex items-center gap-4 hover:border-slate-700 transition-colors shadow-sm">
-        <img :src="p.image_url" :alt="p.title" class="w-24 h-16 object-cover rounded-xl border border-slate-800 flex-shrink-0 bg-slate-950" />
+        class="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-4 flex items-center gap-4 hover:border-slate-700 transition-all shadow-sm"
+        :class="{ 'opacity-60 border-dashed': !(p.is_visible ?? true) }">
+        <div class="relative flex-shrink-0">
+          <img :src="p.image_url" :alt="p.title" class="w-24 h-16 object-cover rounded-xl border border-slate-800 bg-slate-950" />
+          <span v-if="!(p.is_visible ?? true)" class="absolute inset-0 bg-black/60 rounded-xl flex items-center justify-center text-[10px] font-bold text-rose-300">Hidden</span>
+        </div>
         <div class="flex-1 min-w-0">
-          <h3 class="text-sm font-bold text-slate-100 truncate">{{ p.title }}</h3>
+          <div class="flex items-center gap-2">
+            <h3 class="text-sm font-bold text-slate-100 truncate">{{ p.title }}</h3>
+            <span v-if="p.is_visible ?? true" class="px-2 py-0.5 text-[10px] rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">Aktif</span>
+            <span v-else class="px-2 py-0.5 text-[10px] rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20 font-medium">Disembunyikan</span>
+          </div>
           <p class="text-xs text-slate-400 line-clamp-2 mt-0.5">{{ p.short_description_en }}</p>
           <div class="flex flex-wrap gap-1.5 mt-2">
             <span v-for="tag in (p.tags ?? []).slice(0, 5)" :key="tag" class="px-2 py-0.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[11px] font-medium rounded-md">{{ tag }}</span>
           </div>
         </div>
         <div class="flex gap-2 flex-shrink-0">
+          <button @click="toggleVisibility(p)" class="p-2.5 rounded-xl bg-slate-800 transition-colors border border-slate-700/60"
+            :class="(p.is_visible ?? true) ? 'hover:bg-amber-600/20 hover:text-amber-400 text-emerald-400' : 'hover:bg-emerald-600/20 hover:text-emerald-400 text-rose-400'"
+            :title="(p.is_visible ?? true) ? 'Sembunyikan Proyek' : 'Tampilkan Proyek'">
+            <Eye v-if="p.is_visible ?? true" class="w-4 h-4" />
+            <EyeOff v-else class="w-4 h-4" />
+          </button>
           <button @click="openForm(p)" class="p-2.5 rounded-xl bg-slate-800 hover:bg-blue-600/20 hover:text-blue-400 text-slate-400 transition-colors border border-slate-700/60" title="Edit Proyek"><Pencil class="w-4 h-4" /></button>
           <button @click="deleteProject(p.id)" class="p-2.5 rounded-xl bg-slate-800 hover:bg-rose-600/20 hover:text-rose-400 text-slate-400 transition-colors border border-slate-700/60" title="Hapus Proyek"><Trash2 class="w-4 h-4" /></button>
         </div>
@@ -96,6 +110,16 @@
               <div><label class="block text-xs font-semibold text-slate-400 mb-1.5">Live Preview URL</label><input v-model="form.live_url" type="url" class="input-admin" placeholder="https://..." /></div>
               <div><label class="block text-xs font-semibold text-slate-400 mb-1.5">Repository GitHub URL</label><input v-model="form.code_url" type="url" class="input-admin" placeholder="https://github.com/..." /></div>
             </div>
+            <div class="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between">
+              <div>
+                <label class="text-xs font-bold text-slate-200 block">Status Visibilitas (Tampilkan di Website)</label>
+                <p class="text-[11px] text-slate-400 mt-0.5">Jika dinonaktifkan, proyek ini tidak akan tampil di halaman portofolio namun tetap tersimpan di database.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" v-model="form.is_visible" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
           </div>
 
           <div class="sticky bottom-0 bg-slate-900 border-t border-slate-800 px-6 py-4 flex gap-3 justify-end z-10">
@@ -114,7 +138,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { Plus, Pencil, Trash2, X, Save, Loader2, FolderOpen } from 'lucide-vue-next'
+import { Plus, Pencil, Trash2, X, Save, Loader2, FolderOpen, Eye, EyeOff } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
 import ImageUploadInput from '@/components/admin/ImageUploadInput.vue'
 
@@ -124,7 +148,7 @@ const showForm = ref(false)
 const isSaving = ref(false)
 const editingId = ref(null)
 
-const defaultForm = () => ({ title: '', image_url: '', short_description_en: '', short_description_id: '', description_en: '', description_id: '', semester_en: '', semester_id: '', project_type_en: '', project_type_id: '', team_size_en: '', team_size_id: '', tags: [], features_en: [], features_id: [], live_url: '', code_url: '', sort_order: 0 })
+const defaultForm = () => ({ title: '', image_url: '', short_description_en: '', short_description_id: '', description_en: '', description_id: '', semester_en: '', semester_id: '', project_type_en: '', project_type_id: '', team_size_en: '', team_size_id: '', tags: [], features_en: [], features_id: [], live_url: '', code_url: '', sort_order: 0, is_visible: true })
 const form = ref(defaultForm())
 
 const tagsText = computed({ get: () => (form.value.tags ?? []).join(', '), set: v => { form.value.tags = v.split(',').map(s => s.trim()).filter(Boolean) } })
@@ -157,6 +181,16 @@ const saveProject = async () => {
   }
   if (!err) { showForm.value = false; load() }
   isSaving.value = false
+}
+
+const toggleVisibility = async (p) => {
+  const newStatus = !(p.is_visible ?? true)
+  const { error } = await supabase.from('projects').update({ is_visible: newStatus }).eq('id', p.id)
+  if (!error) {
+    p.is_visible = newStatus
+  } else {
+    alert('Gagal mengubah visibilitas proyek. Pastikan kolom is_visible sudah ditambahkan ke database Supabase Anda.')
+  }
 }
 
 const deleteProject = async (id) => {
