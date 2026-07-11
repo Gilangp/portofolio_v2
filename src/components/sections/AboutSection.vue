@@ -4,6 +4,8 @@
     <div class="absolute top-0 right-0 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
+    <div class="h-8"></div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12 animate-fade-in">
         <span class="relative inline-block">
@@ -14,10 +16,10 @@
         </span>
       </h2>
 
-      <div class="flex flex-col lg:flex-row items-center gap-6 md:gap-8">
+      <div class="flex flex-col lg:flex-row items-center lg:items-start gap-6 md:gap-8">
         <!-- Photo -->
         <div class="w-full lg:w-2/5 order-1 flex justify-center">
-          <div class="relative flex justify-center mx-auto -mt-4 lg:mt-0">
+          <div class="relative flex justify-center mx-auto -mt-4 lg:mt-1">
             <div class="overflow-hidden rounded-xl border-4 border-blue-400/50 hover:border-purple-300 transition-all duration-500 shadow-lg hover:shadow-xl hover:shadow-purple-500/20 group transform hover:-translate-y-1">
               <img
                 :src="settings?.about_photo_url ?? settings?.profile_photo_url ?? 'https://ui-avatars.com/api/?name=Gilang+Purnomo&size=400&background=3b82f6&color=fff&bold=true'"

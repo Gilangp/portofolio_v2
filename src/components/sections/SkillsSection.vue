@@ -1,8 +1,10 @@
 <template>
-  <section id="skills" class="min-h-screen py-16 px-4 sm:px-6 lg:px-8 bg-gray-100 text-gray-900 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-850 dark:to-gray-800 dark:text-white transition-colors duration-700 relative overflow-hidden">
+  <section id="skills" class="min-h-screen py-14 px-4 sm:px-6 lg:px-8 bg-gray-100 text-gray-900 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-850 dark:to-gray-800 dark:text-white transition-colors duration-700 relative overflow-hidden">
     <!-- Background elements -->
     <div class="absolute top-1/4 left-10 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
     <div class="absolute bottom-1/4 right-10 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="h-8"></div>
 
     <div class="max-w-7xl mx-auto relative z-10">
       <div class="text-center mb-12 animate-fade-in">
